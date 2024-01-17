@@ -1,20 +1,31 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import "reflect-metadata";
 import { AppDataSource } from './database';
 import cors from 'cors';
+import routers from './routes';
+import AppError from './errors/AppError';
 
 const app = express();
 app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req:any, res:any) => {
-  res.send('Bem-vindo ao Express com TypeScript e Nodemon!');
-});
+app.use(routers);
 
 AppDataSource.initialize().then(async () => {
   console.log('Database OK');
-  app.listen(3333, () => {
+  app.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
+  })
+})
+
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof AppError) return res.status(err.statusCode).json({
+      message: err.message
+  })
+
+  return res.status(500).json({
+      status: "Error",
+      message: `Internal server error ${err.message}`
   })
 })
