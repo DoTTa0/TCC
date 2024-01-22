@@ -1,7 +1,5 @@
-import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
-import UserType from './UserType';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import BaseModel from './BaseModel';
-import Address from './Address';
 import User from './User';
 
 @Entity('medicalHistory')

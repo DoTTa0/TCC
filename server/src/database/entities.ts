@@ -1,13 +1,13 @@
-import Address from "../models/Address";
-import Appointments from "../models/Appointments";
-import MedicalHistory from "../models/MedicalHistory";
-import MedicalProcedure from "../models/MedicalProcedure";
-import MedicalProcedureSection from "../models/MedicalProcedureSection";
-import MedicalProcedureType from "../models/MedicalProcedureType";
-import MedicalRecord from "../models/MedicalRecord";
-import Prescriptions from "../models/Prescriptions";
-import User from "../models/User";
-import UserType from "../models/UserType";
+import Address from "../entities/Address";
+import Appointments from "../entities/Appointments";
+import MedicalHistory from "../entities/MedicalHistory";
+import MedicalProcedure from "../entities/MedicalProcedure";
+import MedicalProcedureSection from "../entities/MedicalProcedureSection";
+import MedicalProcedureType from "../entities/MedicalProcedureType";
+import MedicalRecord from "../entities/MedicalRecord";
+import Prescriptions from "../entities/Prescriptions";
+import User from "../entities/User";
+import UserType from "../entities/UserType";
 
 const entities = [
     User, 

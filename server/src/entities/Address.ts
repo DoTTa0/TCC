@@ -2,7 +2,7 @@ import { Entity, Column } from 'typeorm';
 import BaseModel from './BaseModel';
 
 @Entity('address')
-class Address extends BaseModel{
+class Address extends BaseModel {
     @Column('varchar', { length: 255 })
     street: string;
 
@@ -20,7 +20,6 @@ class Address extends BaseModel{
 
     @Column('varchar', { length: 255 })
     complement: string;
-
 
 }
 
