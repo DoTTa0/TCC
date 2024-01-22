@@ -1,0 +1,5 @@
+INSERT INTO `userType`(`name`,`flagActive`,`createdAt`,`updatedAt`) VALUES
+	('Admin', 1, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+	('Médico(a)', 1, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+	('Enfermeiro(a)', 1, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6)),
+	('Paciente', 1, CURRENT_TIMESTAMP(6), CURRENT_TIMESTAMP(6));
