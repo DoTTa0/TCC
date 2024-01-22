@@ -6,11 +6,11 @@ import routers from './routes';
 import AppError from './errors/AppError';
 
 const app = express();
+app.use(express.json());
 app.use(cors());
+app.use('/api', routers);
 
 const PORT = process.env.PORT || 3000;
-
-app.use(routers);
 
 AppDataSource.initialize().then(async () => {
   console.log('Database OK');
