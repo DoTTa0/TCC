@@ -1,3 +1,4 @@
+import { Between } from "typeorm";
 import { AppDataSource } from "../database";
 import MedicalProcedure from "../entities/MedicalProcedure";
 import Prescriptions from "../entities/Prescriptions";
@@ -59,7 +60,7 @@ const getById = (id:number): Promise<MedicalProcedure | null> => {
     });
 }
 
-const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalProcedure | Error> => {
+const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalProcedure> => {
     const medicalProcedure = await getById(id);
     if (!medicalProcedure) throw new Error("Procedimento não encontrado");
 
@@ -91,6 +92,38 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
     return medicalProcedure;
 }
 
+const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedure | null> => {
+    const today = new Date(Date.now());
+    const day = today.getDate();
+    const month  = today.getMonth() + 1;
+    const year = today.getFullYear();
+
+    const startDate = new Date(`${year}-${month}-${day} 00:00:00`);
+    const endDate = new Date(`${year}-${month}-${day} 23:59:59`);
+    
+    const medicalProcedure = await medicalProcedureRepository.findOne({
+        where:{
+            patientId,
+            procedureDate: Between(startDate, endDate),
+        },
+        relations
+    });
+
+    return medicalProcedure;
+}
+
+const editCheckin = async (id:number): Promise<MedicalProcedure> => {
+    const medicalProcedure = await getById(id);
+    if (!medicalProcedure) throw new Error("Procedimento não encontrado");
+
+    medicalProcedure.checkin = true;
+    medicalProcedure.checkinTime = new Date(Date.now());
+
+    await medicalProcedureRepository.save(medicalProcedure);
+
+    return medicalProcedure;
+}
+
 
 export default { 
     listAll,
@@ -98,5 +131,7 @@ export default {
     listByNurseId,
     listByPatientId,
     getById,
-    edit
+    edit,
+    getByPatientToCheckin,
+    editCheckin
 };

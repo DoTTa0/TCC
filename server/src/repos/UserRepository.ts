@@ -49,8 +49,18 @@ const edit = async (id: number,req: UserRequest):  Promise<User | Error> => {
 
 }
 
+const getByCpf = (cpf: string): Promise<User | null> => {
+    return userRepository.findOne({
+        where: {
+            cpf
+        },
+        relations
+    });
+}
+
 export default { 
     list,
     getById,
-    edit
+    edit,
+    getByCpf
 };
