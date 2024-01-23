@@ -11,7 +11,7 @@ class MedicalRecord extends BaseModel {
     nurseRecord: string;
 
     //Relacionamento
-    @OneToOne(type => MedicalProcedure) @JoinColumn() 
+    @OneToOne(type => MedicalProcedure, medicalProcedure => medicalProcedure.medicalRecord) @JoinColumn() 
     medicalProcedure: MedicalProcedure;
 
 }

@@ -1,9 +1,10 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import BaseModel from './BaseModel';
 import User from './User';
 import MedicalProcedureType from './MedicalProcedureType';
 import Appointments from './Appointments';
 import Prescriptions from './Prescriptions';
+import MedicalRecord from './MedicalRecord';
 
 @Entity('medicalProcedure')
 class MedicalProcedure extends BaseModel{
@@ -19,6 +20,15 @@ class MedicalProcedure extends BaseModel{
 
     @Column('varchar', { length: 255 })
     folder: string;
+
+    @Column('int')
+    doctorId: number;
+
+    @Column('int')
+    nurseId: number;
+
+    @Column('int')
+    patientId: number;
 
     //Relacionamentos
     @ManyToOne(type => User, user => user.patients)
@@ -38,6 +48,9 @@ class MedicalProcedure extends BaseModel{
 
     @OneToMany(type => Prescriptions, prescriptions => prescriptions.medicalProcedure)
     prescriptions: Prescriptions[];
+
+    @OneToOne(type => MedicalRecord, medicalRecord => medicalRecord.medicalProcedure) 
+    medicalRecord: MedicalRecord;
 
 }
 

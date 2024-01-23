@@ -24,7 +24,7 @@ const getById = (id: number): Promise<User | null> => {
 const edit = async (id: number,req: UserRequest):  Promise<User | Error> => {
     const user = await getById(id)
 
-    if (!user) return new Error("Usuário não encontrado");
+    if (!user) throw new Error("Usuário não encontrado");
 
     user.birthDate = req.birthDate ?? user.birthDate;
     user.name = req.name ?? user.name;

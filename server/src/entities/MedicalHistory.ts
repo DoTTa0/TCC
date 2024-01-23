@@ -16,7 +16,7 @@ class MedicalHistory extends BaseModel{
 
     //Relacionamentos
     @ManyToOne(type => User, user => user.medicalHistories)
-    user: User;
+    patient: User;
 
 }
 

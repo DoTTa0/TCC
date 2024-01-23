@@ -45,7 +45,7 @@ class User extends BaseModel{
     @OneToOne(type => Address) @JoinColumn() 
     address: Address;
 
-    @OneToMany(type => MedicalHistory, medicalHistory => medicalHistory.user)
+    @OneToMany(type => MedicalHistory, medicalHistory => medicalHistory.patient)
     medicalHistories: MedicalHistory[];
 
     @OneToMany(type => MedicalProcedure, medicalProcedure => medicalProcedure.patient)
