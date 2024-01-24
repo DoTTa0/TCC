@@ -1,4 +1,3 @@
-import { response } from "express";
 import { validaCPF } from "../helpers/ValidaCPF";
 import CheckinRequest from "../models/Request/CheckinRequest"
 import CheckinResponse from "../models/Response/CheckinResponse";

@@ -3,6 +3,7 @@ import { AppDataSource } from "../database";
 import MedicalProcedure from "../entities/MedicalProcedure";
 import Prescriptions from "../entities/Prescriptions";
 import MedicalProcedureRequest from "../models/Request/MedicalProcedureRequest";
+import ReferralRequest from "../models/Request/ReferralRequest";
 
 const relations = [ 
     'patient', 
@@ -12,7 +13,8 @@ const relations = [
     'appointments',
     'prescriptions',
     'patient.medicalHistories',
-    'medicalRecord'
+    'medicalRecord',
+    'medicalProcedureType.medicalProcedureSection'
 ];
 
 
@@ -124,6 +126,36 @@ const editCheckin = async (id:number): Promise<MedicalProcedure> => {
     return medicalProcedure;
 }
 
+const listByNurseToReferral = async (model: ReferralRequest): Promise<MedicalProcedure[]> => {
+    const { nurseId, startDate, endDate } = model;
+    
+    const medicalProcedure = await medicalProcedureRepository.find({
+        where:{
+            nurseId,
+            procedureDate: Between(startDate, endDate),
+        },
+        relations
+    });
+
+    return medicalProcedure;
+}
+
+const listByNurseToReferralCheckin = async (model: ReferralRequest): Promise<MedicalProcedure[]> => {
+    const { nurseId, startDate, endDate } = model;
+    
+    const medicalProcedure = await medicalProcedureRepository.find({
+        where:{
+            nurseId,
+            checkin: true,
+            procedureDate: Between(startDate, endDate)
+            
+        },
+        relations
+    });
+
+    return medicalProcedure;
+}
+
 
 export default { 
     listAll,
@@ -133,5 +165,7 @@ export default {
     getById,
     edit,
     getByPatientToCheckin,
-    editCheckin
+    editCheckin,
+    listByNurseToReferral,
+    listByNurseToReferralCheckin
 };

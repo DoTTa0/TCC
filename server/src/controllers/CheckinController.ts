@@ -16,7 +16,7 @@ checkinRouter.get('/search', async (req: TypedRequest<CheckinRequest>, res: Resp
     return res.status(200).json(response);
 });
 
-checkinRouter.get('/checkin', async (req: TypedRequest<CheckinRequest>, res: Response<CheckinResponse>): Promise<Response> => {
+checkinRouter.put('/checkin', async (req: TypedRequest<CheckinRequest>, res: Response<CheckinResponse>): Promise<Response> => {
     const { body: model } = req; 
     const response = await CheckinService.checkin(model);
     return res.status(200).json(response);
