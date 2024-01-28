@@ -2,6 +2,9 @@ import { Request, Response, Router } from 'express';
 import CheckinService from '../services/CheckinService';
 import CheckinRequest from '../models/Request/CheckinRequest';
 import CheckinResponse from '../models/Response/CheckinResponse';
+import { generateCheckinPDF } from '../helpers/PDF';
+import fs from 'fs';
+
 
 const checkinRouter = Router();
 
@@ -19,6 +22,17 @@ checkinRouter.get('/search', async (req: TypedRequest<CheckinRequest>, res: Resp
 checkinRouter.put('/checkin', async (req: TypedRequest<CheckinRequest>, res: Response<CheckinResponse>): Promise<Response> => {
     const { body: model } = req; 
     const response = await CheckinService.checkin(model);
+    const tempFile = generateCheckinPDF(response);
+    res.download(tempFile, (err) => {
+        if (err) {
+          console.log(err);
+        }
+
+        if (fs.existsSync(tempFile)) {
+          fs.unlinkSync(tempFile);
+        }
+      });
+    
     return res.status(200).json(response);
 });
 

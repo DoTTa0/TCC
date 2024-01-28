@@ -94,7 +94,7 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
     return medicalProcedure;
 }
 
-const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedure | null> => {
+const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedure> => {
     const today = new Date(Date.now());
     const day = today.getDate();
     const month  = today.getMonth() + 1;
@@ -111,7 +111,9 @@ const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedur
         relations
     });
 
-    return medicalProcedure;
+    const response = medicalProcedure === null ? new MedicalProcedure() : medicalProcedure;
+
+    return response;
 }
 
 const editCheckin = async (id:number): Promise<MedicalProcedure> => {
