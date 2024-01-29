@@ -13,7 +13,7 @@ interface TypedRequest<T> extends Request {
     body: T;
   }
 
-checkinRouter.get('/search', async (req: TypedRequest<CheckinRequest>, res: Response<CheckinResponse>): Promise<Response> => {
+checkinRouter.post('/search', async (req: TypedRequest<CheckinRequest>, res: Response<CheckinResponse>): Promise<Response> => {
     const { body: model } = req; 
     const response = await CheckinService.checkinSearch(model);
     return res.status(200).json(response);
@@ -35,5 +35,7 @@ checkinRouter.put('/checkin', async (req: TypedRequest<CheckinRequest>, res: Res
     
     return res.status(200).json(response);
 });
+
+//Plano B: Fazer rota de Download a parte;
 
 export default checkinRouter;

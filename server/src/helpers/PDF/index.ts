@@ -24,8 +24,8 @@ const generateCheckinPDF = (model: CheckinResponse): string => {
       <div>
         <div>Paciente: ${patient.name}</div>
         <div>Nome da mãe: ${patient.nameMother}</div>
-        <div>Data de nascimento: ${patient.birthDate}</div>
-        <div>Data: ${medicalProcedure.procedureDate}</div>
+        <div>Data de nascimento: ${new Date(patient.birthDate).toLocaleDateString('pt-BR')}</div>
+        <div>Data: ${new Date(medicalProcedure.procedureDate).toLocaleDateString('pt-BR')}</div>
         <div>
           <div class="circle"></div>
         </div>
@@ -47,6 +47,7 @@ const options = {
 
 const tempFile = path.resolve(
   __dirname,
+  '..',
   '..',
   '..',
   'uploads',

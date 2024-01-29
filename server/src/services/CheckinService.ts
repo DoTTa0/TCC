@@ -6,7 +6,9 @@ import UserRepository from "../repos/UserRepository";
 
 const checkinSearch  = async (req: CheckinRequest): Promise<CheckinResponse> => {
     const { cpf } = req;
-    const validateCPF = await validaCPF(cpf);
+
+    const cpfClean = cpf.replace(/[.-]/g, '');
+    const validateCPF = await validaCPF(cpfClean);
 
     if(!validateCPF[0]) throw new Error('CPF inválido');
 
