@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import mime from 'mime-types';
 import { google } from 'googleapis';
 
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import credentials from '../config/googleCredential.json';
 import ExamesRequest from '../models/Request/ExamesRequest';
 
@@ -106,10 +106,13 @@ const upload = async (req: Request, res: Response): Promise<any> => {
     
       if (!folder) throw new Error('Folder not found');
 
+      console.log('Authenticated as:', auth);
 
       const resFiles = await drive.files.list({
-        q: `mimeType != 'application/vnd.google-apps.folder' and '${folder}' in parents`,
+        q: `mimeType != 'application/vnd.google-apps.folder' and '${folder}' in parents`
       });
+
+      console.log(resFiles)
 
       return resFiles.data.files;
   }

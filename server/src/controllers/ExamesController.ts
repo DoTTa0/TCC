@@ -31,7 +31,8 @@ examesRouter.post('/download', async (req: TypedRequest<ExamesRequest>, res: Res
 
 examesRouter.get('/list/:folder', async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
-        const { folder } = req.params; 
+        const { folder } = req.params;
+        console.log(folder)
         const response = await ExamesService.list(folder);
         return res.status(200).json(response);
     } catch (e) {
