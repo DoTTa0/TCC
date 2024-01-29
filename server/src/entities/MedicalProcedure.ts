@@ -46,10 +46,14 @@ class MedicalProcedure extends BaseModel{
     @OneToMany(type => Appointments, appointment => appointment.medicalProcedure)
     appointments: Appointments[];
 
-    @OneToMany(type => Prescriptions, prescriptions => prescriptions.medicalProcedure)
+    @OneToMany(type => Prescriptions, prescriptions => prescriptions.medicalProcedure, {
+        cascade: true,
+    })
     prescriptions: Prescriptions[];
 
-    @OneToOne(type => MedicalRecord, medicalRecord => medicalRecord.medicalProcedure) 
+    @OneToOne(type => MedicalRecord, medicalRecord => medicalRecord.medicalProcedure, {
+        cascade: true,
+    }) 
     medicalRecord: MedicalRecord;
 
 }

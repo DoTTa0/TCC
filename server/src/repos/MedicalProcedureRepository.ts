@@ -4,6 +4,7 @@ import MedicalProcedure from "../entities/MedicalProcedure";
 import Prescriptions from "../entities/Prescriptions";
 import MedicalProcedureRequest from "../models/Request/MedicalProcedureRequest";
 import ReferralRequest from "../models/Request/ReferralRequest";
+import MedicalRecord from "../entities/MedicalRecord";
 
 const relations = [ 
     'patient', 
@@ -66,6 +67,8 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
     const medicalProcedure = await getById(id);
     if (!medicalProcedure) throw new Error("Procedimento não encontrado");
 
+    if (medicalProcedure.medicalRecord === null) medicalProcedure.medicalRecord = new MedicalRecord();
+
     medicalProcedure.medicalRecord.doctorRecord = req.medicalRecord?.doctorRecord ?? medicalProcedure.medicalRecord?.doctorRecord;
     medicalProcedure.medicalRecord.nurseRecord = req.medicalRecord?.nurseRecord ?? medicalProcedure.medicalRecord?.nurseRecord;
 
@@ -89,7 +92,7 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
         });
     }
 
-    await medicalProcedureRepository.save(medicalProcedure);
+    await medicalProcedureRepository.save(medicalProcedure, {});
 
     return medicalProcedure;
 }
