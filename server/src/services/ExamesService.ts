@@ -3,25 +3,27 @@ import fs from 'fs';
 import crypto from 'crypto';
 import mime from 'mime-types';
 import { google } from 'googleapis';
-
 import { Request, Response } from 'express';
-import credentials from '../config/googleCredential.json';
 import ExamesRequest from '../models/Request/ExamesRequest';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
 
-const auth = new google.auth.JWT(
-  credentials.client_email,
-  '',
-  credentials.private_key,
+const auth = new google.auth.GoogleAuth({
+  keyFile: path.resolve(
+    __dirname,
+    '..',
+    'config',
+    'googleDriveCredentials.json'
+  ),
   scopes
+}
 );
 
 const drive = google.drive({ version: 'v3', auth });
 
 const upload = async (req: Request, res: Response): Promise<any> => {
   const  { body, files } = req;  
-  const { folder = null } = body;
+  const { folder = '1PDfNaVXgqxLsph3bKjn7KTi1Bv-NGonb' } = body;
 
       
   if (!folder) throw new Error('Folder not found');
@@ -32,10 +34,10 @@ const upload = async (req: Request, res: Response): Promise<any> => {
   await Promise.all(
     // @ts-ignore
     files?.forEach(async (element: any) => {
-      const resCreate = drive.files.create({
+      console.log(element)
+      const resCreate = await drive.files.create({
         requestBody: {
           name: element.originalname,
-          parents: [folder],
         },
         media: {
           mimeType: element.mimeType,
@@ -44,9 +46,9 @@ const upload = async (req: Request, res: Response): Promise<any> => {
         fields: 'id',
       });
 
-      if (fs.existsSync(path.resolve(element.path))) {
-        fs.unlinkSync(path.resolve(element.path));
-      }
+      // if (fs.existsSync(path.resolve(element.path))) {
+      //   fs.unlinkSync(path.resolve(element.path));
+      // }
 
       console.log(resCreate);
     })
@@ -106,13 +108,9 @@ const upload = async (req: Request, res: Response): Promise<any> => {
     
       if (!folder) throw new Error('Folder not found');
 
-      console.log('Authenticated as:', auth);
-
       const resFiles = await drive.files.list({
         q: `mimeType != 'application/vnd.google-apps.folder' and '${folder}' in parents`
       });
-
-      console.log(resFiles)
 
       return resFiles.data.files;
   }

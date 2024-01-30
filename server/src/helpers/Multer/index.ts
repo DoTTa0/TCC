@@ -1,5 +1,6 @@
 import multer from 'multer';
 import crypto from 'crypto';
+import path from 'path';
 
 const storage = multer.diskStorage({
   filename: async (req, file, cb) => {
@@ -11,6 +12,14 @@ const storage = multer.diskStorage({
       cb(error, '');
     }
   },
+  destination: path.resolve(
+    __dirname,
+    '..',
+    '..',
+    '..',
+    'uploads',
+    'temp'
+  )
 });
 
 const fileFilter = (req: any, file: any, cb: any) => {
@@ -22,9 +31,9 @@ const limits = {
 };
 
 const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: limits,
+  storage,
+  fileFilter,
+  limits 
 });
 
 export { upload };
