@@ -4,7 +4,7 @@ import * as FaIcons from 'react-icons/fa'
 
 const HomePage = () => {
     return (
-        <div className="home">
+        <div className="page">
             <HomeMain>
                 <TittleLabel>Ecossistema</TittleLabel>
                 <CardsSection>
