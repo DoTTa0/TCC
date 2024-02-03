@@ -10,6 +10,7 @@ import MedicalProcedeuresPage from "../pages/MedicalProcedures";
 import ReferralPage from "../pages/Referral";
 import CheckinPage from "../pages/Checkin";
 import Sidemenu from "../components/Sidemenu";
+import UserDetails from "../pages/UserDetails";
 
 
 const Main = () => {
@@ -22,6 +23,7 @@ const Main = () => {
                 <Route path='/' Component={HomePage} ></Route>
                 <Route path='/checkin' Component={CheckinPage} ></Route>            
                 <Route path='/users' Component={UsersPage} ></Route>
+                <Route path='/users/:id' Component={UserDetails} ></Route>
                 <Route path='/medicalProcedures' Component={MedicalProcedeuresPage} ></Route>
                 <Route path='/referral' Component={ReferralPage} ></Route>
             </Routes>

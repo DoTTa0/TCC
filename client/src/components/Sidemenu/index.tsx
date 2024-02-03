@@ -17,10 +17,10 @@ const Sidemenu = () => {
                     </InfoUser>
                 </DivInfoUser>
                 <div>
-                {SidemenuData.map((item) => {
+                {SidemenuData.map((item, index) => {
                             return (
-                                <SidebarLink to={item.path}>
-                                <SidebarContent>
+                                <SidebarLink key={index} to={item.path}>
+                                <SidebarContent key={index}>
                                     <TiThMenu />
                                     <SidebarLabel>{item.title}</SidebarLabel>
                                 </SidebarContent>

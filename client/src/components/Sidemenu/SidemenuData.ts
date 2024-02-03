@@ -1,4 +1,4 @@
-
+const userId = 4 //localStorage.getItem('userId');
 const SidemenuData = [
     {
         title: 'Usuários',
@@ -10,7 +10,7 @@ const SidemenuData = [
     },
     {
         title: 'Perfil',
-        path: '/users'
+        path: `/users/${userId}`
     },
     {
         title: 'Encaminhamento',

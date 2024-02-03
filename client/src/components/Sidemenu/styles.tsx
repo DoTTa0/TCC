@@ -91,7 +91,7 @@ export const SidebarLink = styled(Link)`
 `;
 
 export const SidebarContent = styled.div`
-    text-align: center
+    text-align: center;
 `
 
 export const SidebarLabel = styled.span`
