@@ -7,7 +7,7 @@ const UserProfile = () => {
     const [name, setName] = useState('');
     return (
         <UserProfileMain>
-            <ExpandableComponent expand={false} title='Informações Gerais'>
+            <ExpandableComponent title='Informações Gerais'>
                 <FormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='25%'>
@@ -50,7 +50,7 @@ const UserProfile = () => {
                     </DivFormInfo>
                 </FormInfo>
             </ExpandableComponent>
-            <ExpandableComponent expand={false} title='Endereço'>
+            <ExpandableComponent title='Endereço'>
                 <FormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='25%'>

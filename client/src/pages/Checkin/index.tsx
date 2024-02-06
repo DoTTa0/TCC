@@ -1,15 +1,16 @@
 import { IoIosArrowForward, IoIosCheckmark} from "react-icons/io";
-import { BoxTableInit, Button, ButtonCPF, CheckinMain, CircleIcon, DivButton, DivFormCPF, FormCPF, InputCPF, LabelCPF, LabelWarning, SubTitle } from "./styles";
+import { BoxTableInit, ButtonCPF, CheckinMain, CircleIcon, DivButton, DivFormCPF, FormCPF, InputCPF, LabelCPF, LabelWarning, SubTitle } from "./styles";
 import { RxCross2 } from "react-icons/rx";
 import { PiWarningCircleFill } from "react-icons/pi";
 import { useState } from "react";
 import TitleComponent from "../../components/TitleComponent";
 import UserProfile from "../../components/UserProfile";
 import MedicalProcedureCheckin from "../../components/MedicalProcedureCheckin";
+import ButtonComponent from "../../components/ButtonComponent";
 
 const CheckinPage = () => {
     const [cpf, setCpf] = useState('');
-    const isError = false;
+    const isError = true;
     const isInit = true;
     return (
         <div className="page">
@@ -53,9 +54,7 @@ const CheckinPage = () => {
                     <UserProfile />
                     <MedicalProcedureCheckin />
                     <DivButton>
-                        <Button>
-                            Check-in
-                        </Button>
+                        <ButtonComponent text='Check-in'/>
                     </DivButton>
                 </>
                 }
