@@ -11,6 +11,7 @@ import ReferralPage from "../pages/Referral";
 import CheckinPage from "../pages/Checkin";
 import Sidemenu from "../components/Sidemenu";
 import UserDetails from "../pages/UserDetails";
+import MedicalProceduresDetails from "../pages/MedicalProceduresDetails";
 
 
 const Main = () => {
@@ -25,6 +26,7 @@ const Main = () => {
                 <Route path='/users' Component={UsersPage} ></Route>
                 <Route path='/users/:id' Component={UserDetails} ></Route>
                 <Route path='/medicalProcedures' Component={MedicalProcedeuresPage} ></Route>
+                <Route path='/medicalProcedures/:id' Component={MedicalProceduresDetails} ></Route>
                 <Route path='/referral' Component={ReferralPage} ></Route>
             </Routes>
         </Router>

@@ -1,6 +1,6 @@
 import TitleComponent from "../../components/TitleComponent";
 import UserProfile from "../../components/UserProfile";
-import { Button, DivButton, UserDetailsMain } from "./style";
+import { Button, DivButton, UserDetailsMain } from "./styles";
 
 const UserDetails = () => {
     return (
