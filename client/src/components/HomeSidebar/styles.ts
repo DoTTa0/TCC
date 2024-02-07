@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -41,9 +42,14 @@ export const LogoItems = styled.div`
     color: #152C70;
 `
 
-export const LogoIcon = styled.div`
+export const LogoIcon = styled(Link)`
     font-size: 80px;
     margin-bottom: 20px;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: #152C70;
+
 `
 
 export const LogoText = styled.div`

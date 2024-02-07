@@ -1,6 +1,6 @@
 import { FaRegEdit } from "react-icons/fa";
 import { columns } from "./DataTables";
-import { TableCell, TableCellName, TableContainer, TableHead, TableHeaderCell, TableRow } from "./styles";
+import { IconLink, TableCell, TableCellName, TableContainer, TableHead, TableHeaderCell, TableRow } from "./styles";
 
 // Definição de tipos para as propriedades do componente de tabela
 interface TableProps {
@@ -25,7 +25,11 @@ const UsersTableComponent: React.FC<TableProps> = ({ data }) => {
 
                 if(column.name === 'Nome') return <TableCellName key={colIndex}>{row[column.value]}</TableCellName>
                 
-                if(column.name === 'Ação') return <TableCell width={'5%'} key={colIndex}><FaRegEdit fontSize={25} /></TableCell>
+                if(column.name === 'Ação') return <TableCell width={'5%'} key={colIndex}>
+                                                    <IconLink to={`/users/${row[column.value]}`}>
+                                                      <FaRegEdit fontSize={25} />
+                                                    </IconLink>
+                                                  </TableCell>
 
                 return <TableCell key={colIndex}>{row[column.value]}</TableCell>
               }

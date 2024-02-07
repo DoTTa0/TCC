@@ -2,7 +2,7 @@ import {
     BrowserRouter as Router,
     Routes,
     Route
-  } from "react-router-dom";
+} from "react-router-dom";
 import HomePage from "../pages/Home";
 import HomeSidebar from "../components/HomeSidebar";
 import UsersPage from "../pages/Users";
@@ -15,11 +15,10 @@ import MedicalProceduresDetails from "../pages/MedicalProceduresDetails";
 
 
 const Main = () => {
-    const pathname = window.location.pathname;
-    const sidebarComponent = pathname === '/' || pathname === '/checkin' ?  <HomeSidebar/> : <Sidemenu />
     return (
         <Router>
-           {sidebarComponent}
+            <HomeSidebar/> 
+            <Sidemenu />
             <Routes>
                 <Route path='/' Component={HomePage} ></Route>
                 <Route path='/checkin' Component={CheckinPage} ></Route>            

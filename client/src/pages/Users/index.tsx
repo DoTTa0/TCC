@@ -3,44 +3,58 @@ import { DivButton, UsersMain } from "./styles";
 import ButtonComponent from "../../components/ButtonComponent";
 import TitleComponent from "../../components/TitleComponent";
 import UsersTableComponent from "../../components/UsersTableComponent";
+import { useState } from "react";
+import api from "../../services/api";
 
-const data = [
-    {
-        space: '',
-        name: 'João',
-        userType: 'Paciente',
-        document: '000.000.000-00',
-        phone: '(99)99999-9999',
-        userId: 1
-    },
-    {
-        space: '',
-        name: 'Catarina',
-        userType: 'Médico',
-        document: '000.000.000-00',
-        phone: '(99)99999-9999',
-        userId: 2
-    },
-    {
-        space: '',
-        name: 'Correia',
-        userType: 'Enfermeiro',
-        document: '000.000.000-00',
-        phone: '(99)99999-9999',
-        userId: 3
-    },
-    // Adicione mais objetos conforme necessário
-  ];
+interface ListUser {
+        space: string;
+        name: string;
+        userType: string;
+        document: string;
+        phone: string;
+        userId: number;
+}
 
 const UsersPage = () => {
+    const[listAll, setListAll] = useState<ListUser[]>([]);
+
+
+    const callListAll = async () => {
+        const allUsers = await api.get(`users`)
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response);
+
+            console.log(allUsers);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const response: ListUser[] = allUsers.data.map((item: any) => {
+            const res = {
+                space: '',
+                name: item.name,
+                userType: item.userType.name,
+                document: item.cpf,
+                phone: item.phone,
+                userId: item.id
+            } as ListUser;
+            return res;
+        })
+
+
+        setListAll(response)
+    }
+
+
+
+
     return (
         <div className="page">
             <UsersMain>
-                <TitleComponent title='Usuárioss' />
+                <TitleComponent title='Usuários' />
                 <DivButton>
-                    <ButtonComponent icon={<IoSearch />} text='Pesquisar'/>
+                    <ButtonComponent icon={<IoSearch />} text='Pesquisar' onClick={async () => await callListAll()}/>
                 </DivButton>
-                <UsersTableComponent data={data} />
+                <UsersTableComponent data={listAll} />
             </UsersMain>
         </div>
     );

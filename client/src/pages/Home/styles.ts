@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const HomeMain = styled.div`
@@ -30,9 +31,12 @@ width: 100% ;
 justify-content: space-between;
 `
 
-export const CardsUsers = styled.button`
-  width: 200px;
-  height: 180px ;
+export const CardsUsers = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 100%;
   padding: 20px;
   border:none;
   border-radius: 10px;
@@ -41,7 +45,8 @@ export const CardsUsers = styled.button`
   cursor: pointer;
   outline:none;
   color: #152C70;
-  font-size: 50px;
+  font-size: 80px;
+  margin: 50px;
 
   &:hover{
         background: #152C70;
@@ -54,12 +59,15 @@ display: flex;
 flex-flow: row nowrap;
 width: 100% ;
 justify-content: center;
-margin: 50px 0px;
+margin: 100px 0px;
 `
 
-export const CardCheckin = styled.button`
-  width: 600px;
-  height: 180px;
+export const CardCheckin = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
   padding: 20px;
   border:none;
   border-radius: 10px;
@@ -68,7 +76,9 @@ export const CardCheckin = styled.button`
   cursor: pointer;
   outline:none;
   color: #152C70;
-  font-size: 50px;
+  font-size: 80px;
+  margin: 50px;
+
 
   &:hover{
         background: #152C70;

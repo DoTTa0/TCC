@@ -26,7 +26,7 @@ export const SidebarWrap = styled.div`
     width: 100%;
 `
 
-export const LogoName = styled.div`
+export const LogoName = styled(Link)`
     display: flex;
     justify-content: space-evenly;
     width: 60%;
@@ -35,6 +35,9 @@ export const LogoName = styled.div`
     color: #109CF1;
     margin-top: 10px;
     margin-bottom: 30px;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
 `
 
 export const DivInfoUser = styled.div`

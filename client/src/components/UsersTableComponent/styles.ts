@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // Estilizando a tabela e suas células
@@ -32,6 +33,7 @@ export const TableCell = styled.td`
   text-align: left;
   padding: 20px;
   color: #707683;
+  text-decoration: none;
 `;
 
 export const TableCellName = styled.td`
@@ -41,4 +43,9 @@ export const TableCellName = styled.td`
   color: #323C47;
   font-weight: 550;
 `;
+
+export const IconLink = styled(Link)`
+  color: #707683;
+  text-decoration: none;
+`
 
