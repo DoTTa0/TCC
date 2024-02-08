@@ -3,7 +3,7 @@ import AddressRequest from "./AddressRequest";
 export default class UserRequest {
         name?: string;   
         email?: string;   
-        birthDate?: Date;   
+        birthDate?: string;   
         gender?: string;    
         phone?: string;  
         cpf?: string;  

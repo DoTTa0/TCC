@@ -22,6 +22,7 @@ const getById = (id: number): Promise<User | null> => {
 }
 
 const edit = async (id: number,req: UserRequest):  Promise<User | Error> => {
+
     const user = await getById(id)
 
     if (!user) throw new Error("Usuário não encontrado");
@@ -36,12 +37,15 @@ const edit = async (id: number,req: UserRequest):  Promise<User | Error> => {
     user.phone = req.phone ?? user.phone;
     user.rg = req.rg ?? user.rg;
 
-    user.address.cep = req.address.cep ?? user.address.cep;
-    user.address.city = req.address.city ?? user.address.city;
-    user.address.complement = req.address.complement ?? user.address.complement;
-    user.address.number = req.address.number ?? user.address.number;
-    user.address.state = req.address.state ?? user.address.state;
-    user.address.street = req.address.street ?? user.address.street;
+    if(user.address) {
+        user.address.cep = req.address?.cep ?? user.address?.cep;
+        user.address.city = req.address?.city ?? user.address?.city;
+        user.address.complement = req.address?.complement ?? user.address?.complement;
+        user.address.number = req.address?.number ?? user.address?.number;
+        user.address.state = req.address?.state ?? user.address?.state;
+        user.address.street = req.address?.street ?? user.address?.street;
+    
+    }
 
     await userRepository.save(user);
 

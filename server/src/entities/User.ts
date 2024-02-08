@@ -15,7 +15,7 @@ class User extends BaseModel{
     email: string;
 
     @Column('date')
-    birthDate: Date;
+    birthDate: string;
 
     @Column('varchar', { length: 50 })
     gender: string;
@@ -42,7 +42,9 @@ class User extends BaseModel{
     @ManyToOne(type => UserType, userType => userType.users)
     userType: UserType;
 
-    @OneToOne(type => Address) @JoinColumn() 
+    @OneToOne(type => Address, {
+        cascade: true,
+    }) @JoinColumn() 
     address: Address;
 
     @OneToMany(type => MedicalHistory, medicalHistory => medicalHistory.patient)
