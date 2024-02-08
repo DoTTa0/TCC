@@ -20,7 +20,7 @@ import { format } from "date-fns";
 }
 
 const MedicalProcedeuresPage = () => {
-    const[listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
+    const [listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
     const [getUserType] = useState(Number(localStorage.getItem('userType')));
     const [getUserId] = useState(localStorage.getItem('id'));
 
@@ -36,15 +36,13 @@ const MedicalProcedeuresPage = () => {
         if(getUserType === 3) path = `${path}/listByNurse/${getUserId}`
         if(getUserType === 4) path = `${path}/listByPatient/${getUserId}`
 
-        const allUsers = await api.get(path)
+        const allMedicalProcedures = await api.get(path)
             .then(success => success)
             .catch(error => error.response)
             .then(response => response);
-
-            console.log(allUsers);
         
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const response: ListMedicalProcedures[] = allUsers.data.map((item: any) => {
+        const response: ListMedicalProcedures[] = allMedicalProcedures.data.map((item: any) => {
             const res = {
                 sectionColor: item.medicalProcedureType.medicalProcedureSection.color,
                 patientName: item.patient.name,
@@ -57,7 +55,6 @@ const MedicalProcedeuresPage = () => {
             } as ListMedicalProcedures;
             return res;
         })
-
 
         setListAll(response)
     }

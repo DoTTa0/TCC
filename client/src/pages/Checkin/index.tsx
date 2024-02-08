@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { PiWarningCircleFill } from "react-icons/pi";
 import { useState } from "react";
 import TitleComponent from "../../components/TitleComponent";
-import UserProfile from "../../components/UserProfile";
+// import UserProfile from "../../components/UserProfile";
 import MedicalProcedureCheckin from "../../components/MedicalProcedureCheckin";
 import ButtonComponent from "../../components/ButtonComponent";
 
@@ -51,7 +51,7 @@ const CheckinPage = () => {
                 { isInit &&
                 <>
                     <SubTitle>Verifique seus dados</SubTitle>
-                    <UserProfile />
+                    {/* <UserProfile /> */}
                     <MedicalProcedureCheckin />
                     <DivButton>
                         <ButtonComponent text='Check-in'/>

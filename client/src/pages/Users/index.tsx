@@ -29,8 +29,6 @@ const UsersPage = () => {
             .catch(error => error.response)
             .then(response => response);
 
-            console.log(allUsers);
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const response: ListUser[] = allUsers.data.map((item: any) => {
             const res = {
@@ -47,8 +45,6 @@ const UsersPage = () => {
 
         setListAll(response)
     }
-
-
 
 
     return (

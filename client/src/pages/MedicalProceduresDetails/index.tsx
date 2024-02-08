@@ -1,18 +1,18 @@
-import { useState } from "react";
-import ExpandableComponent from "../../components/ExpandableComponent";
-import InputComponent from "../../components/InputComponent";
-import TitleComponent from "../../components/TitleComponent";
-import { Button, ButtonIcon, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, ExamesInfo, FormInfo, FormInfoItem, MedicalProceduresDetailsMain } from "./styles";
-import { FaCircle } from "react-icons/fa";
-import { IoIosAddCircle } from "react-icons/io";
-import TextAreaComponent from "../../components/TextAreaComponent";
+// import { useState } from "react";
+// import ExpandableComponent from "../../components/ExpandableComponent";
+// import InputComponent from "../../components/InputComponent";
+// import TitleComponent from "../../components/TitleComponent";
+// import { Button, ButtonIcon, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, ExamesInfo, FormInfo, FormInfoItem, MedicalProceduresDetailsMain } from "./styles";
+// import { FaCircle } from "react-icons/fa";
+// import { IoIosAddCircle } from "react-icons/io";
+// import TextAreaComponent from "../../components/TextAreaComponent";
 
 const MedicalProceduresDetails = () => {
-    const [name, setName] = useState('');
-    const bool = true;
+    // const [name, setName] = useState('');
+    // const bool = true;
     return (
         <div className="page">
-            <MedicalProceduresDetailsMain>
+            {/* <MedicalProceduresDetailsMain>
                 <TitleComponent title='Detalhes do procedimento' />
                 <ExpandableComponent title='Informações Gerais'>
                     <FormInfo>
@@ -138,7 +138,7 @@ const MedicalProceduresDetails = () => {
                         Salvar
                     </Button>
                 </DivButton>
-            </MedicalProceduresDetailsMain>
+            </MedicalProceduresDetailsMain> */}
         </div>
     )
 }
