@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // Estilizando a tabela e suas células
@@ -56,3 +57,8 @@ export const TableCellCheckin = styled.div<TableCellCheckinProps>`
   justify-content: center;
   border-radius: 5px;
 `;
+
+export const IconLink = styled(Link)`
+  color: #707683;
+  text-decoration: none;
+`

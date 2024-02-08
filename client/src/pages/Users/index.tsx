@@ -3,7 +3,7 @@ import { DivButton, UsersMain } from "./styles";
 import ButtonComponent from "../../components/ButtonComponent";
 import TitleComponent from "../../components/TitleComponent";
 import UsersTableComponent from "../../components/UsersTableComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../services/api";
 
 interface ListUser {
@@ -18,6 +18,10 @@ interface ListUser {
 const UsersPage = () => {
     const[listAll, setListAll] = useState<ListUser[]>([]);
 
+    useEffect(() => {
+        const init = async () =>  await callListAll();
+        init();
+    }, []);
 
     const callListAll = async () => {
         const allUsers = await api.get(`users`)

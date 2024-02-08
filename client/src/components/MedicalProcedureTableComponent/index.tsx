@@ -1,6 +1,6 @@
 import { FaCircle, FaRegEdit } from "react-icons/fa";
 import { columns } from "./DataTables";
-import { TableCell, TableCellCheckin, TableCellPatientName, TableContainer, TableHead, TableHeaderCell, TableRow } from "./styles";
+import { IconLink, TableCell, TableCellCheckin, TableCellPatientName, TableContainer, TableHead, TableHeaderCell, TableRow } from "./styles";
 
 // Definição de tipos para as propriedades do componente de tabela
 interface TableProps {
@@ -23,13 +23,17 @@ const MedicalProcedureTableComponent: React.FC<TableProps> = ({ data }) => {
             <TableRow key={rowIndex}>
               {columns.map((column, colIndex) => {
 
-                if(column.name === '') return <TableCell width={'1%'} key={colIndex}><FaCircle fontSize={25} color="green"/></TableCell>
+                if(column.name === '') return <TableCell width={'1%'} key={colIndex}><FaCircle fontSize={25} color={row[column.value]}/></TableCell>
 
                 if(column.name === 'Paciente') return <TableCellPatientName key={colIndex}>{row[column.value]}</TableCellPatientName>
 
                 if(column.name === 'Check-in') return <TableCell key={colIndex}><TableCellCheckin checkin={row[column.value]}>{row[column.value] ? 'Presente' : 'Ausente'}</TableCellCheckin></TableCell>
                 
-                if(column.name === 'Ação') return <TableCell width={'5%'} key={colIndex}><FaRegEdit fontSize={25} /></TableCell>
+                if(column.name === 'Ação') return <TableCell width={'5%'} key={colIndex}>
+                                                    <IconLink to={`/medicalProcedures/${row[column.value]}`}>
+                                                      <FaRegEdit fontSize={25} />
+                                                    </IconLink>
+                                                  </TableCell>
 
                 return <TableCell key={colIndex}>{row[column.value]}</TableCell>
               }
