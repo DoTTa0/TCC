@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Key, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../services/api";
 import IMedicalProcedure from "../../interfaces/IMedicalProcedure";
@@ -10,7 +10,7 @@ import IMedicalRecordRequest from "../../interfaces/Request/IMedicalRecordReques
 import ExpandableComponent from "../../components/ExpandableComponent";
 import InputComponent from "../../components/InputComponent";
 import TitleComponent from "../../components/TitleComponent";
-import { Button, ButtonIcon, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, ExamesInfo, FormInfo, FormInfoItem, MedicalProceduresDetailsMain } from "./styles";
+import { Button, ButtonIcon, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, DownloadFile, ExamesInfo, FormInfo, FormInfoItem, MedicalProceduresDetailsMain } from "./styles";
 import { FaCircle } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
 import TextAreaComponent from "../../components/TextAreaComponent";
@@ -29,13 +29,17 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     const [medicamento, setMedicamento] = useState('');
     const [dose, setDose] = useState('');
     const [instucao, setInstrucao] = useState('');
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [filesArray, setFilesArray] = useState<any>([])
 
 
     const getMedicalProceduresId = medicalProceduresId ? medicalProceduresId : id;
 
     useEffect(() => {
-        const init = async () =>  await callMedicalProcedureById();
+        const init = async () =>  {
+            await callMedicalProcedureById();
+            
+        };
         init();
     }, []);
 
@@ -90,7 +94,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             return accumulator + value + "\n";
           }, "");
 
-          console.log(responseData)
+        await callListFile(responseData.folder);
         setPrescriptions(dataPrescription)
         setMedicalProcedure(responseData);
     }
@@ -157,6 +161,22 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
           setInstrucao('')
     }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const callListFile = async (folder: string) => {
+            const response = await api.get(`exames/list/${folder}`)
+                .then(success => success)
+                .catch(error => error.response)
+                .then(response => response)
+
+            const { data } = response;
+    
+            console.log(data)
+    
+            //if (response.status !== 200) return alert(msg)
+    
+            setFilesArray(response.data)
+        }
+
     // const bool = true;
     return (
         <div className="page">
@@ -200,10 +220,18 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                 </ExpandableComponent>
                 <ExpandableComponent title='Exames'>
                     <ExamesInfo>
-                        { [1,2,3,4].map((item, index) => {
+                        
+                        {// eslint-disable-next-line @typescript-eslint/no-explicit-any 
+                        filesArray.map((item: any, index: Key | null | undefined) => {
                             return (
                                 <DivExamesInfo key={index}>
-                                    teste {item}
+                                    <DownloadFile
+                                    href={`${api.defaults.baseURL}/exames/download/${item.id}/${item.name}`}
+                                    download
+                                    target="_blank"
+                                    >
+                                        {item.name}
+                                    </DownloadFile>
                                 </DivExamesInfo>
                             )
                             })
@@ -254,8 +282,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                         </DivFormInfo>
                     </FormInfo>
                 </ExpandableComponent>
-                {(getUserType !== 2 && getUserType !== 4) &&
-                <>
+                {(getUserType !== 2 && getUserType !== 4) &&   
                     <ExpandableComponent title='Prontuário - Enfermeiro'>
                         <FormInfo>
                             <DivFormInfo>
@@ -264,9 +291,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                                 </FormInfoItem>
                             </DivFormInfo>
                         </FormInfo>
-                    </ExpandableComponent>
-                </>
-                    
+                    </ExpandableComponent>  
                 }
                 {(getUserType !== 3 && getUserType !== 4) &&
                     <ExpandableComponent title='Prontuário - Médico'>

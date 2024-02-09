@@ -115,3 +115,13 @@ export const ButtonIcon = styled.button`
         color: #109CF1;
     }
 `
+
+export const DownloadFile = styled.a`
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    font-size: 1em;
+    color: black;
+`
