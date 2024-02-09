@@ -24,38 +24,32 @@ const drive = google.drive({ version: 'v3', auth });
 
 const upload = async (req: Request, res: Response): Promise<any> => {
   const  { body, files } = req;  
-  const { folder = '1PDfNaVXgqxLsph3bKjn7KTi1Bv-NGonb' } = body;
+  const { folder  } = body;
 
-      
   if (!folder) throw new Error('Folder not found');
 
-
-  console.log(files);
 
   await Promise.all(
     // @ts-ignore
     files?.forEach(async (element: any) => {
-      console.log(element)
       const resCreate = await drive.files.create({
         requestBody: {
           name: element.originalname,
+          parents:[folder]
         },
         media: {
           mimeType: element.mimeType,
           body: fs.createReadStream(path.resolve(element.path)),
         },
         fields: 'id',
+      }).finally(() => {
+          if (fs.existsSync(path.resolve(element.path))) {
+            fs.unlinkSync(path.resolve(element.path));
+          }
       });
-
-      // if (fs.existsSync(path.resolve(element.path))) {
-      //   fs.unlinkSync(path.resolve(element.path));
-      // }
-
-      console.log(resCreate);
+      //console.log(resCreate);
     })
   );
-
-  return res;
   }
 
   const download = async (req: ExamesRequest): Promise<ExamesDownloadResponse> => {
