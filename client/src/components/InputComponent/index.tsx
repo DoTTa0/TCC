@@ -7,21 +7,23 @@ interface InputComponentProps {
     type?: string;
     value: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setValue: Dispatch<React.SetStateAction<any>>;
+    setValue?: Dispatch<React.SetStateAction<any>>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     object?: any;
-    nameObject: string;
+    nameObject?: string;
+    disable?: boolean;
 }
 
 
-const InputComponent: React.FC<InputComponentProps> = ({ title, required = true, type = 'text', value, setValue, object, nameObject = '' }) =>{
+const InputComponent: React.FC<InputComponentProps> = ({ title, required = true, type = 'text', value, setValue = () => {}, object, nameObject = '', disable = false }) =>{
     return(
         <Main>
             <Input 
             required={required} 
             type={type} 
+            disabled={disable}
             value={value} 
-            onChange={(event) => setValue({...object, [nameObject]: event.target.value})} />
+            onChange={(event) => object ? setValue({...object, [nameObject]: event.target.value}) : setValue(event.target.value)} />
             <Label>{title}</Label>
         </Main>
 

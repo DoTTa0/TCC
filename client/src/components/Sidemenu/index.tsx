@@ -8,16 +8,24 @@ import { useLocation } from "react-router-dom";
 const Sidemenu = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let getSideBarData:any[] = [];
+    let type;
 
     const callLevelAccess = (typeUser: number) => {
         if (typeUser === 1) {
             getSideBarData = SidemenuData.filter((item) => item.title !== 'Perfil' && item.title !== 'Encaminhamento');
+            type = 'Admin';
         }
-        if (typeUser === 2 || typeUser === 4) {
+        if (typeUser === 2) {
             getSideBarData = SidemenuData.filter((item) => item.title !== 'Usuários' && item.title !== 'Encaminhamento');
+            type = 'Médico';
         }
         if (typeUser === 3) {
             getSideBarData = SidemenuData.filter((item) => item.title !== 'Usuários');
+            type = 'Enfermeiro';
+        }
+        if (typeUser === 4) {
+            getSideBarData = SidemenuData.filter((item) => item.title !== 'Usuários' && item.title !== 'Encaminhamento');
+            type = 'Paciente';
         }
     }
 
@@ -32,7 +40,7 @@ const Sidemenu = () => {
                         <DivInfoUser>
                             <ImgProfile><FaUserCircle /></ImgProfile>
                             <InfoUser>
-                                <TypeName> Médico - Manuel</TypeName>
+                                <TypeName> {type} </TypeName>
                                 <Email>example@example.com</Email>
                             </InfoUser>
                         </DivInfoUser>

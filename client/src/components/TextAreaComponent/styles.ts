@@ -48,4 +48,10 @@ export const Label = styled.label`
         font-size: 14px;
         font-style: italic;
     }
+
+    ${Textarea}:disabled ~ &{
+        top: -20px;
+        font-size: 14px;
+        font-style: italic;
+    }
 `
