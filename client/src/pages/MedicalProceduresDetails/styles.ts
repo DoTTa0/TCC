@@ -102,20 +102,6 @@ export const DivExamesInfo = styled.div`
     margin-right: 40px;
 `
 
-export const ButtonIcon = styled.button`
-    background-color: white;
-    border: none;
-    outline: none;
-    color: #152C70;
-    cursor: pointer;
-    position: absolute;
-    top: 80px;
-    
-    &:hover {
-        color: #109CF1;
-    }
-`
-
 export const DownloadFile = styled.a`
     cursor: pointer;
     outline: none;
@@ -125,3 +111,23 @@ export const DownloadFile = styled.a`
     font-size: 1em;
     color: black;
 `
+
+export const InputAddFile = styled.input.attrs({ type: 'file' })`
+  height: 0;
+  width: 0;
+  opacity: 0;
+  z-index: -1;
+`;
+
+export const BlockAddFile = styled.label`
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 60px;
+  color: #152C70;
+  position: absolute;
+  top: 80px;
+
+  &:hover {
+        color: #109CF1;
+    }
+`;

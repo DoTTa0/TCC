@@ -10,7 +10,7 @@ import IMedicalRecordRequest from "../../interfaces/Request/IMedicalRecordReques
 import ExpandableComponent from "../../components/ExpandableComponent";
 import InputComponent from "../../components/InputComponent";
 import TitleComponent from "../../components/TitleComponent";
-import { Button, ButtonIcon, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, DownloadFile, ExamesInfo, FormInfo, FormInfoItem, MedicalProceduresDetailsMain } from "./styles";
+import { BlockAddFile, Button, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, DownloadFile, ExamesInfo, FormInfo, FormInfoItem, InputAddFile, MedicalProceduresDetailsMain } from "./styles";
 import { FaCircle } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
 import TextAreaComponent from "../../components/TextAreaComponent";
@@ -169,15 +169,28 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                 .then(response => response)
 
             const { data } = response;
-    
-            console.log(data)
-    
-            //if (response.status !== 200) return alert(msg)
-    
-            setFilesArray(response.data)
+        
+            setFilesArray(data)
         }
 
-    // const bool = true;
+    const addFiles = async (filesEvent: FileList | null) => {
+
+        const files = filesEvent !== null ? [...filesEvent] : [];
+        const formData = new FormData()
+        formData.append('folder', medicalProcedure.folder)
+        files?.forEach((item) => formData.append('files', item))
+
+        const response = await api.post('exames/upload', formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } })
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response)
+
+        console.log(response);
+
+        setTimeout(async () => await callListFile(medicalProcedure.folder), 5000)
+
+    }
     return (
         <div className="page">
             <MedicalProceduresDetailsMain>
@@ -238,9 +251,15 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                         }
                     </ExamesInfo>
                     <DivButton>
-                        <ButtonIcon>
-                            <IoIosAddCircle fontSize={60}/>
-                        </ButtonIcon>
+                        <BlockAddFile htmlFor='file'>
+                        <IoIosAddCircle />
+                            <InputAddFile
+                                id='file'
+                                multiple={true}
+                                accept="image/*,.pdf"
+                                onChange={async (event) => await addFiles(event.target.files)}
+                            />
+                        </BlockAddFile>
                     </DivButton>
                 </ExpandableComponent>
                 <ExpandableComponent title='Consultas'>
