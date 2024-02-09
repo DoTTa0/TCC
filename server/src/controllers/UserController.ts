@@ -12,7 +12,6 @@ interface TypedRequest<T> extends Request {
 
 userRouter.get('/', async (_req: Request, res: Response): Promise<Response> => {
     const users = await UserRepository.list();
-    console.log(users)
     return res.status(200).json(users);
 });
 

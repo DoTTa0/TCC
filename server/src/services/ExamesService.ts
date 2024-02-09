@@ -5,6 +5,7 @@ import mime from 'mime-types';
 import { google } from 'googleapis';
 import { Request, Response } from 'express';
 import ExamesRequest from '../models/Request/ExamesRequest';
+import ExamesDownloadResponse from '../models/Response/ExamesDownloadResponse';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
 
@@ -57,7 +58,7 @@ const upload = async (req: Request, res: Response): Promise<any> => {
   return res;
   }
 
-  const download = async (req: ExamesRequest, res: Response): Promise<any> => {
+  const download = async (req: ExamesRequest): Promise<ExamesDownloadResponse> => {
       const { file = null, name = null } = req;
 
       if (!name || !file) throw new Error('Folder not found');
@@ -86,22 +87,12 @@ const upload = async (req: Request, res: Response): Promise<any> => {
         `${fileName}`
       );
 
-      console.log(resDrive.headers['content-type']);
+      const response = new ExamesDownloadResponse();
+      response.tempFile = tempFile;
+      response.fileData = resDrive.data;
 
-      const dest = fs.createWriteStream(tempFile);
-      resDrive.data.pipe(dest);
+      return response;
 
-      dest.on('finish', () => {
-        res.download(tempFile, name, (err) => {
-          if (err) {
-            console.log(err);
-          }
-
-          if (fs.existsSync(tempFile)) {
-            fs.unlinkSync(tempFile);
-          }
-        });
-      });
   }
 
   const list = async (folder: string): Promise<any> => {
