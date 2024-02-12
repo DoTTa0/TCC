@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { FC } from "react";
 import ExpandableComponent from "../ExpandableComponent";
 import InputComponent from "../InputComponent";
 import { DivFormInfo, FormInfo, FormInfoItem, MedicalProcedureCheckinMain } from "./styles";
 import { FaCircle } from "react-icons/fa";
+import IMedicalProcedure from "../../interfaces/IMedicalProcedure";
 
-const MedicalProcedureCheckin = () => {
-    const [name, setName] = useState('');
+interface MedicalProcedureCheckinProps {
+    medicalProcedure: IMedicalProcedure;
+}
+
+const MedicalProcedureCheckin: FC<MedicalProcedureCheckinProps> = ({medicalProcedure}) => {
 
     return( 
     <MedicalProcedureCheckinMain>
@@ -13,19 +17,19 @@ const MedicalProcedureCheckin = () => {
             <FormInfo>
                 <DivFormInfo>
                     <FormInfoItem width='25%'>
-                        <InputComponent title='Nome do procedimento' value={name} setValue={setName}/>
+                        <InputComponent  disable={true} title='Nome do procedimento' value={medicalProcedure.medicalProcedureName} />
                     </FormInfoItem>
                     <FormInfoItem width='25%'>
-                        <InputComponent title='Médico responsável' value={name} setValue={setName}/>
+                        <InputComponent disable={true} title='Médico responsável' value={medicalProcedure.doctorName} />
                     </FormInfoItem>
                     <FormInfoItem width='10%'>
-                        <InputComponent title='Data' value={name} setValue={setName}/>
+                        <InputComponent disable={true} title='Data' value={medicalProcedure.procedureDate} />
                     </FormInfoItem>
                     <FormInfoItem width='10%'>
-                        <InputComponent title='Hora' value={name} setValue={setName}/>
+                        <InputComponent disable={true} title='Hora' value={medicalProcedure.procedureHour} />
                     </FormInfoItem>
                     <FormInfoItem icon={true} width='30%'>
-                        <FaCircle color="#2ED47A"/>
+                        <FaCircle color={medicalProcedure.medicalProcedureSection}/>
                     </FormInfoItem>
                 </DivFormInfo>
             </FormInfo>

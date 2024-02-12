@@ -11,9 +11,10 @@ interface UserProfileProps {
     setUser: Dispatch<React.SetStateAction<IUser>>;
     address: IAddress;
     setAddress: Dispatch<React.SetStateAction<IAddress>>;
+    disable?: boolean;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAddress, getUserType = Number(localStorage.getItem('userType'))}) => {
+const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAddress, getUserType = Number(localStorage.getItem('userType')), disable = false}) => {
 
     return (
         <UserProfileMain>
@@ -21,33 +22,33 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                 <FormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Nome Completo' value={user.name} object={user} nameObject={'name'} setValue={setUser}/>
+                            <InputComponent title='Nome Completo' disable={disable} value={user.name} object={user} nameObject={'name'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Data de nascimento' value={user.birthDate} object={user} nameObject={'birthDate'} setValue={setUser}/>
+                            <InputComponent title='Data de nascimento' disable={disable} value={user.birthDate} object={user} nameObject={'birthDate'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Nome da mãe' value={user.nameMother} object={user} nameObject={'nameMother'} setValue={setUser}/>
+                            <InputComponent title='Nome da mãe' disable={disable} value={user.nameMother} object={user} nameObject={'nameMother'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='E-mail' value={user.email} object={user} nameObject={'email'} setValue={setUser}/>
+                            <InputComponent title='E-mail' disable={disable} value={user.email} object={user} nameObject={'email'} setValue={setUser}/>
                         </FormInfoItem>
                     </DivFormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='15%'>
-                            <InputComponent title='CPF' value={user.cpf} object={user} nameObject={'cpf'} setValue={setUser}/>
+                            <InputComponent title='CPF' disable={disable} value={user.cpf} object={user} nameObject={'cpf'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='15%'>
-                            <InputComponent title='RG' value={user.rg} object={user} nameObject={'rg'} setValue={setUser}/>
+                            <InputComponent title='RG' disable={disable} value={user.rg} object={user} nameObject={'rg'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Telefone' value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
+                            <InputComponent title='Telefone' disable={disable} value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Telefone de emergência'value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
+                            <InputComponent title='Telefone de emergência' disable={disable} value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='15%'>
-                            <InputComponent title='Sexo' value={user.gender} object={user} nameObject={'gender'} setValue={setUser}/>
+                            <InputComponent title='Sexo' disable={disable} value={user.gender} object={user} nameObject={'gender'} setValue={setUser}/>
                         </FormInfoItem>
                     </DivFormInfo>
                     { getUserType !== 4 &&
@@ -70,16 +71,16 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                 <FormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Rua' value={address.street ?? ''} object={address} nameObject={'street'} setValue={setAddress}/>
+                            <InputComponent title='Rua' disable={disable} value={address.street ?? ''} object={address} nameObject={'street'} setValue={setAddress}/>
                         </FormInfoItem>
                         <FormInfoItem width='10%'>
-                            <InputComponent title='Número' value={address.number ?? ''} object={address} nameObject={'number'} setValue={setAddress}/>
+                            <InputComponent title='Número' disable={disable} value={address.number ?? ''} object={address} nameObject={'number'} setValue={setAddress}/>
                         </FormInfoItem>
                         <FormInfoItem width='20%'>
-                            <InputComponent title='Complemento' value={address.complement ?? ''} object={address} nameObject={'complement'} setValue={setAddress}/>
+                            <InputComponent title='Complemento' disable={disable} value={address.complement ?? ''} object={address} nameObject={'complement'} setValue={setAddress}/>
                         </FormInfoItem>
                         <FormInfoItem width='15%'>
-                            <InputComponent title='CEP' value={address.cep ?? ''} object={address} nameObject={'cep'} setValue={setAddress}/>
+                            <InputComponent title='CEP' disable={disable} value={address.cep ?? ''} object={address} nameObject={'cep'} setValue={setAddress}/>
                         </FormInfoItem>
                         {/* <FormInfoItem width='20%'>
                             <InputComponent title='Bairro' value={user.address.} setValue={setName}/>
@@ -87,10 +88,10 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                     </DivFormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='20%'>
-                            <InputComponent title='Cidade' value={address.city ?? ''} object={address} nameObject={'city'} setValue={setAddress}/>
+                            <InputComponent title='Cidade' disable={disable} value={address.city ?? ''} object={address} nameObject={'city'} setValue={setAddress}/>
                         </FormInfoItem>
                         <FormInfoItem width='20%'>
-                            <InputComponent title='Estado' value={address.state ?? ''} object={address} nameObject={'state'} setValue={setAddress}/>
+                            <InputComponent title='Estado' disable={disable} value={address.state ?? ''} object={address} nameObject={'state'} setValue={setAddress}/>
                         </FormInfoItem>
                     </DivFormInfo>
                 </FormInfo>
