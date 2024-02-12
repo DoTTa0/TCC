@@ -5,6 +5,7 @@ import Prescriptions from "../entities/Prescriptions";
 import MedicalProcedureRequest from "../models/Request/MedicalProcedureRequest";
 import ReferralRequest from "../models/Request/ReferralRequest";
 import MedicalRecord from "../entities/MedicalRecord";
+import { BADRESP } from "dns";
 
 const relations = [ 
     'patient', 
@@ -122,6 +123,8 @@ const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedur
 const editCheckin = async (id:number): Promise<MedicalProcedure> => {
     const medicalProcedure = await getById(id);
     if (!medicalProcedure) throw new Error("Procedimento não encontrado");
+
+    if (medicalProcedure.checkin) throw new Error("Check-in já realizado!");
 
     medicalProcedure.checkin = true;
     medicalProcedure.checkinTime = new Date(Date.now());

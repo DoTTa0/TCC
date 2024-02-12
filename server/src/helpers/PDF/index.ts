@@ -55,12 +55,13 @@ const tempFile = path.resolve(
   `patient.pdf`
 );
 
+
 htmlPdf.create(htmlTemplate, options).toFile(tempFile, (err) => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log('PDF gerado com sucesso');
-  }
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('PDF gerado com sucesso');
+    }
 });
 
 
