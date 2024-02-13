@@ -105,8 +105,8 @@ export const StopButton = styled.button`
     margin-left: 80px;
 
     &:hover {
-        background-color: #152C70;
-
+        background-color: red;
+        border: 2px solid red;
         color: white;
     }
 `

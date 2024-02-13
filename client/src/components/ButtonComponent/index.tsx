@@ -5,13 +5,14 @@ interface ButtonComponentProps {
     text: string;
     icon?: React.ReactNode;
     onClick?: () => void;
+    disable?: boolean;
   }
   
-const ButtonComponent: React.FC<ButtonComponentProps> = ({ text, icon = null, onClick }) => {
+const ButtonComponent: React.FC<ButtonComponentProps> = ({ text, icon = null, onClick, disable = false }) => {
 
     return (
         <>
-            <Button onClick={onClick}>
+            <Button onClick={onClick} disabled={disable}>
                 {text} {icon === null ? '' : <> &nbsp; &nbsp; &nbsp; {icon} </>}
             </Button>
         </>

@@ -1,51 +1,155 @@
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 import MedicalProcedureTableComponent from "../../components/MedicalProcedureTableComponent";
 import TitleComponent from "../../components/TitleComponent";
 import { DivTime, ReferralButton, ReferralMain, StopButton, TimeInput, TimeLabel, TimePickerContainer } from "./styles";
 import { FaPlay, FaRegClock } from "react-icons/fa";
 import { FaRegCircleStop } from "react-icons/fa6";
+import api from "../../services/api";
+import { format } from "date-fns";
+import { ListMedicalProcedures } from "../MedicalProcedures";
+import ButtonComponent from "../../components/ButtonComponent";
+import { IoSearch } from "react-icons/io5";
+import IReferralRequest from "../../interfaces/Request/IReferralRequest";
 
-const data = [
-    {
-        sectionColor: 'Consulta',
-        patientName: 'João',
-        medicalProcedureName: 'Check-up',
-        procedureDate: '2024-01-01',
-        doctorName: 'Dr. Silva',
-        checkin: true,
-        checkinTime: '09:00',
-        medicalProcedureId: 'Editar'
-    },
-    {
-      'sectionColor': 'Exame',
-      'patientName': 'Maria',
-      'medicalProcedureName': 'Ressonância',
-      'procedureDate': '2024-02-15',
-      'doctorName': 'Dra. Santos',
-      'checkin': false,
-      'checkinTime': '',
-      'medicalProcedureId': 'Excluir'
-    },
-    // Adicione mais objetos conforme necessário
-  ];
 
 const ReferralPage = () => {
-    const [selectedTime, setSelectedTime] = useState<string>('');
+    const getJobLocalStorage = (): boolean => {
+        const flagJob = localStorage.getItem('job');
+    
+        if (flagJob === undefined || flagJob === null || flagJob === 'false') return false;
+        
+        return true;
+    }
 
-    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedTime(e.target.value);
-    };
+    const [selectedTimeStart, setSelectedTimeStart] = useState<string>('');
+    const [selectedTimeEnd, setSelectedTimeEnd] = useState<string>('');
+    const [listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
+    const [nurseId] = useState(Number(localStorage.getItem('id')));
+    const [startDate, setStartDate] = useState<Date>();
+    const [endDate, setEndDate] = useState<Date>();
+    const [job, setJob] = useState(getJobLocalStorage());
+    // const [intervalId, setIntervalId] = useState(0);
+    // const [timeoutId, setTimeoutId] = useState(0);
+
+
+    const callListAll = async () => {
+        if (!(startDate instanceof Date) && !(endDate instanceof Date)) return alert('Selecione um horário válido.');
+        if (startDate && endDate && startDate > endDate ) return alert('Selecione um horário de início maior que o de final.');
+
+        const allMedicalProcedures = await api.post('referral/search', createRequest())
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response);
+        
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const response: ListMedicalProcedures[] = allMedicalProcedures.data.map((item: any) => {
+            const res = {
+                sectionColor: item.medicalProcedureType.medicalProcedureSection.color,
+                patientName: item.patient.name,
+                medicalProcedureName: item.medicalProcedureType.name,
+                procedureDate: format(item.procedureDate, 'dd/MM/yyyy'),
+                doctorName: item.doctor.name,
+                checkin: item.checkin,
+                checkinTime: item.checkinTime !== null ? format(new Date(item.checkinTime), 'HH:mm') : null,
+                medicalProcedureId: item.id
+            } as ListMedicalProcedures;
+            return res;
+        })
+
+        setListAll(response)
+    }
   
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleGenerateDate = () => {
-      const [hours, minutes] = selectedTime.split(':').map(Number);
+    const handleGenerateDate = (value: string, setValue: Dispatch<React.SetStateAction<string>>, setDate: Dispatch<React.SetStateAction<Date | undefined>>): Date => {
+      const [hours, minutes] = value.split(':').map(Number);
       const date = new Date();
-      date.setHours(hours);
+      date.setHours(hours - 3);
       date.setMinutes(minutes);
-      date.setSeconds(0)
-      // Aqui você pode fazer o que quiser com o objeto de data gerado
-      console.log('Data gerada:', date);
+      date.setSeconds(0);
+
+      setValue(value);
+      setDate(date);
+
+
+      return date;
     };
+
+    const createRequest = (): IReferralRequest => {
+        return {
+            nurseId,
+            startDate,
+            endDate
+            
+        } as IReferralRequest;
+    }
+
+    const handleButton = async () => {
+        await callListAll();
+    }
+
+    const handleJob = (status: boolean) => {
+        setJob(status);
+
+        if(status) return startJob();
+
+        else return stopJob();
+    }
+
+    const startJob = () => {
+        const getEnd = endDate ? endDate.getTime() : 0;
+        const getStart = startDate ? startDate.getTime() : 0;
+
+        const timeout = getEnd - getStart;
+
+        const interval = setInterval(async () => {
+            await callListJob();
+            await callListAll();
+        }, 1 * 60 * 1000); // 5 minutos
+        const timeoutInterval = setTimeout(() => {
+            clearInterval(interval);
+            console.log('Job encerrado.');
+        }, timeout); 
+
+        // setIntervalId(interval);
+        // setTimeoutId(timeoutInterval);
+
+        localStorage.setItem('intervalId', String(interval));
+        localStorage.setItem('timeoutId', String(timeoutInterval));
+        localStorage.setItem('job', 'true');
+        localStorage.setItem('selectedTimeStart', selectedTimeStart);
+        localStorage.setItem('selectedTimeEnd', selectedTimeEnd);
+        localStorage.setItem('startDate', String(startDate));
+        localStorage.setItem('endDate', String(endDate));
+    }
+
+    const stopJob = () => {
+        clearInterval(Number(localStorage.getItem('intervalId')));
+        clearTimeout(Number(localStorage.getItem('timeoutId')));
+
+        localStorage.removeItem('intervalId');
+        localStorage.removeItem('timeoutId');
+        localStorage.removeItem('job');
+        localStorage.removeItem('selectedTimeStart');
+        localStorage.removeItem('selectedTimeEnd');
+        localStorage.removeItem('startDate');
+        localStorage.removeItem('endDate');
+
+        setSelectedTimeStart('');
+        setSelectedTimeEnd('');
+        setStartDate(undefined);
+        setEndDate(undefined);
+        setListAll([]);
+
+    }
+
+
+    const callListJob = async () => {
+        const response = await api.post('referral/referralByCheckin', createRequest())
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response);
+        
+        console.log(response);
+    }
     
     return (
         <div className="page">
@@ -56,10 +160,11 @@ const ReferralPage = () => {
                         <TimeInput
                             mask="99:99"
                             maskChar="_"
-                            value={selectedTime}
-                            onChange={handleTimeChange}
+                            value={selectedTimeStart}
+                            onChange={(e) => handleGenerateDate(e.target.value, setSelectedTimeStart, setStartDate)}
                             placeholder="00:00"
                             required={true}
+                            disabled={job}
                         />
                         <TimeLabel>Início</TimeLabel>
                         <FaRegClock color="#152C70" fontSize={25}/>
@@ -68,19 +173,28 @@ const ReferralPage = () => {
                         <TimeInput
                             mask="99:99"
                             maskChar="_"
-                            value={selectedTime}
-                            onChange={handleTimeChange}
+                            value={selectedTimeEnd}
+                            onChange={(e) => handleGenerateDate(e.target.value, setSelectedTimeEnd, setEndDate)}
                             placeholder="00:00"
                             required={true}
+                            disabled={job}
                         />
                         <TimeLabel>Fim</TimeLabel>
                         <FaRegClock color="#152C70" fontSize={25}/>
                     </DivTime>
+                    
+                    <ButtonComponent disable={job} icon={<IoSearch />} text='Pesquisar' onClick={async () => await handleButton()}/>
+                    
 
-                    <ReferralButton>Encamminhar &nbsp; <FaPlay fontSize={15}/> </ReferralButton>
-                    <StopButton>Parar &nbsp; <FaRegCircleStop /></StopButton>
+                    {listAll.length > 0 &&
+                        <>
+                            {!job && <ReferralButton onClick={() => handleJob(true)}>Encamminhar &nbsp; <FaPlay fontSize={15}/> </ReferralButton>}
+                            {job && <StopButton onClick={() => handleJob(false)}>Parar &nbsp; <FaRegCircleStop /></StopButton>}
+                        </>
+                        
+                    }
                 </TimePickerContainer>
-                <MedicalProcedureTableComponent data={data} />
+                <MedicalProcedureTableComponent data={listAll} />
             </ReferralMain>
         </div>
     );

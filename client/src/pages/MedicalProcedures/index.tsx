@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ListMedicalProcedures {
+  export interface ListMedicalProcedures {
     sectionColor: string;
     patientName: string;
     medicalProcedureName: string;
