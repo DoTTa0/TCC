@@ -1,8 +1,8 @@
 import { Dispatch, useState } from "react";
 import MedicalProcedureTableComponent from "../../components/MedicalProcedureTableComponent";
 import TitleComponent from "../../components/TitleComponent";
-import { DivTime, ReferralButton, ReferralMain, StopButton, TimeInput, TimeLabel, TimePickerContainer } from "./styles";
-import { FaPlay, FaRegClock } from "react-icons/fa";
+import { DivReferralJob, DivReferralJobItem, DivTime, ReferralButton, ReferralMain, SpanJob, StopButton, TimeInput, TimeLabel, TimePickerContainer } from "./styles";
+import { FaCircle, FaPlay, FaRegClock } from "react-icons/fa";
 import { FaRegCircleStop } from "react-icons/fa6";
 import api from "../../services/api";
 import { format } from "date-fns";
@@ -10,6 +10,7 @@ import { ListMedicalProcedures } from "../MedicalProcedures";
 import ButtonComponent from "../../components/ButtonComponent";
 import { IoSearch } from "react-icons/io5";
 import IReferralRequest from "../../interfaces/Request/IReferralRequest";
+import { IReferralJob } from "../../interfaces/IReferralJob";
 
 
 const ReferralPage = () => {
@@ -28,6 +29,7 @@ const ReferralPage = () => {
     const [startDate, setStartDate] = useState<Date>();
     const [endDate, setEndDate] = useState<Date>();
     const [job, setJob] = useState(getJobLocalStorage());
+    const [listReferral, setListReferral] = useState<IReferralJob[]>([]);
     // const [intervalId, setIntervalId] = useState(0);
     // const [timeoutId, setTimeoutId] = useState(0);
 
@@ -147,7 +149,16 @@ const ReferralPage = () => {
             .then(success => success)
             .catch(error => error.response)
             .then(response => response);
-        
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data = response.data.map((item: any) => {
+            return {
+                name: item.patient.name,
+                color: item.medicalProcedureSection.color,
+                typeProcedure:item.medicalProcedureSection.description
+            } as IReferralJob;
+        })
+        setListReferral(data);
         console.log(response);
     }
     
@@ -195,6 +206,21 @@ const ReferralPage = () => {
                     }
                 </TimePickerContainer>
                 <MedicalProcedureTableComponent data={listAll} />
+
+                { job && listReferral.length > 0 &&
+                    <DivReferralJob>
+                        {listReferral.map((item, index) => {
+                            return (
+                                <DivReferralJobItem key={index}>
+                                    <SpanJob>{item.name}</SpanJob>
+                                    <SpanJob>Procedimento: {item.typeProcedure} -{'>'} <FaCircle color={item.color}/></SpanJob>
+                                </DivReferralJobItem>
+                            )
+                        })
+                            
+                        }
+                    </DivReferralJob>
+                }
             </ReferralMain>
         </div>
     );

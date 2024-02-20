@@ -110,3 +110,34 @@ export const StopButton = styled.button`
         color: white;
     }
 `
+
+export const DivReferralJob = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 80%;
+    padding: 20px;
+    border:none;
+    border-radius: 10px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(21, 44, 112, .7);
+    color: white;
+    margin: 40px 0px;
+`
+
+export const DivReferralJobItem = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 32px;
+    font-weight: bold;
+`
+export const SpanJob = styled.span`
+    border-radius: 10px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: #152C70;
+    padding: 20px;
+
+`
