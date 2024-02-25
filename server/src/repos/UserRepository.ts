@@ -1,6 +1,7 @@
 import { AppDataSource } from "../database";
 import User from "../entities/User";
 import UserRequest from "../models/Request/UserRequest";
+import UserValidateRequest from "../models/Request/UserValidateRequest";
 
 const relations = [ 'userType', 'address' ];
 
@@ -62,9 +63,21 @@ const getByCpf = (cpf: string): Promise<User | null> => {
     });
 }
 
+const getByCpfAndUsertype = (req: UserValidateRequest): Promise<User | null> => {
+    const { cpf, userTypeId } = req;
+    return userRepository.findOne({
+        where: {
+            cpf,
+            userTypeId
+        },
+        relations
+    });
+}
+
 export default { 
     list,
     getById,
     edit,
-    getByCpf
+    getByCpf,
+    getByCpfAndUsertype
 };

@@ -21,6 +21,9 @@ class Address extends BaseModel {
     @Column('varchar', { length: 255 })
     complement: string;
 
+    // @Column('varchar', { length: 255 })
+    // neighborhood: string;
+
 }
 
 export default Address;

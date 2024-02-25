@@ -38,6 +38,12 @@ class User extends BaseModel{
     @Column('varchar', { length: 15 })
     coren: string;
 
+    @Column('int')
+    userTypeId: number;
+
+    // @Column('varchar', { length: 15 })
+    // phoneEmergency: string;
+
     //Relacionamentos
     @ManyToOne(type => UserType, userType => userType.users)
     userType: UserType;

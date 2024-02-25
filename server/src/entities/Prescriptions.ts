@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import BaseModel from "./BaseModel";
 import MedicalProcedure from "./MedicalProcedure";
 
@@ -10,8 +10,14 @@ class Prescriptions extends BaseModel {
     @Column('varchar', { length: 50 })
     dosege: string;
 
+    // @Column('varchar', { length: 50 })
+    // dosage: string;
+
     @Column('text')
     intructions: string;
+
+    // @Column('text')
+    // instructions: string;
 
     //Relacionamento
     @ManyToOne(type => MedicalProcedure, medicalProcedure => medicalProcedure.prescriptions) 

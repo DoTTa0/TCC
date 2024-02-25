@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import UserRepository from '../repos/UserRepository';
 import UserRequest from '../models/Request/UserRequest';
+import UserValidateRequest from '../models/Request/UserValidateRequest';
 
 const userRouter = Router();
 
@@ -25,6 +26,12 @@ userRouter.put('/:id', async (req: TypedRequest<UserRequest>, res: Response): Pr
     const { id } = req.params;
     const { body: model } = req;
     const user = await UserRepository.edit(parseInt(id), model);
+    return res.status(200).json(user);
+});
+
+userRouter.post('/validateUser', async (req: TypedRequest<UserValidateRequest>, res: Response): Promise<Response> => {
+    const { body: model } = req;
+    const user = await UserRepository.getByCpfAndUsertype(model);
     return res.status(200).json(user);
 });
 
