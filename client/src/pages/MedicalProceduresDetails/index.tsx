@@ -105,7 +105,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             .catch(error => error.response)
             .then(response => response);
 
-            if (response.status === 200) return alert('Usuário atualizado!')
+            if (response.status === 200) return alert('Procedimento atualizado!')
     }
 
     const createRequest = (): IMedicalProcedureRequest => {
@@ -348,11 +348,12 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                         }
                     </FormInfo>
                 </ExpandableComponent>
-                <DivButton>
-                    <Button onClick={handleButton}>
-                        Salvar
-                    </Button>
-                </DivButton>
+                {(getUserType !== 1 && getUserType !== 4) &&
+                    <DivButton>
+                        <Button onClick={handleButton}>
+                            Salvar
+                        </Button>
+                    </DivButton>}
             </MedicalProceduresDetailsMain>
         </div>
     )
