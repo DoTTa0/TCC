@@ -14,6 +14,7 @@ CREATE TABLE `users` (
   `gender` varchar(50),
   `addressId` int,
   `phone` varchar(15),
+  `phoneEmergency` varchar(15),
   `cpf` varchar(14),
   `rg` varchar(12),
   `nameMother` varchar(255),
@@ -33,6 +34,7 @@ CREATE TABLE `address` (
   `state` varchar(50),
   `cep` varchar(10),
   `complement` varchar(255),
+  `neighborhood` varchar(255),
   `flagActive` boolean,
   `createdAt` timestamp DEFAULT (current_timestamp()),
   `updatedAt` timestamp DEFAULT (current_timestamp())
@@ -98,8 +100,8 @@ CREATE TABLE `prescriptions` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `medicalProcedureId` int,
   `medicament` varchar(100),
-  `dosege` varchar(50),
-  `intructions` text,
+  `dosage` varchar(50),
+  `instructions` text,
   `flagActive` boolean,
   `createdAt` timestamp DEFAULT (current_timestamp()),
   `updatedAt` timestamp DEFAULT (current_timestamp())
