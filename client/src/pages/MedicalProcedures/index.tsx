@@ -21,8 +21,8 @@ import { format } from "date-fns";
 
 const MedicalProcedeuresPage = () => {
     const [listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
-    const [getUserType] = useState(Number(localStorage.getItem('userType')));
-    const [getUserId] = useState(localStorage.getItem('id'));
+    const [getUserType] = useState(Number(sessionStorage.getItem('userType')));
+    const [getUserId] = useState(sessionStorage.getItem('id'));
 
     useEffect(() => {
         const init = async () =>  await callListAll();

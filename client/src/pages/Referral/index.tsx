@@ -14,8 +14,8 @@ import { IReferralJob } from "../../interfaces/IReferralJob";
 
 
 const ReferralPage = () => {
-    const getJobLocalStorage = (): boolean => {
-        const flagJob = localStorage.getItem('job');
+    const getJobsessionStorage = (): boolean => {
+        const flagJob = sessionStorage.getItem('job');
     
         if (flagJob === undefined || flagJob === null || flagJob === 'false') return false;
         
@@ -25,10 +25,10 @@ const ReferralPage = () => {
     const [selectedTimeStart, setSelectedTimeStart] = useState<string>('');
     const [selectedTimeEnd, setSelectedTimeEnd] = useState<string>('');
     const [listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
-    const [nurseId] = useState(Number(localStorage.getItem('id')));
+    const [nurseId] = useState(Number(sessionStorage.getItem('id')));
     const [startDate, setStartDate] = useState<Date>();
     const [endDate, setEndDate] = useState<Date>();
-    const [job, setJob] = useState(getJobLocalStorage());
+    const [job, setJob] = useState(getJobsessionStorage());
     const [listReferral, setListReferral] = useState<IReferralJob[]>([]);
     // const [intervalId, setIntervalId] = useState(0);
     // const [timeoutId, setTimeoutId] = useState(0);
@@ -114,26 +114,26 @@ const ReferralPage = () => {
         // setIntervalId(interval);
         // setTimeoutId(timeoutInterval);
 
-        localStorage.setItem('intervalId', String(interval));
-        localStorage.setItem('timeoutId', String(timeoutInterval));
-        localStorage.setItem('job', 'true');
-        localStorage.setItem('selectedTimeStart', selectedTimeStart);
-        localStorage.setItem('selectedTimeEnd', selectedTimeEnd);
-        localStorage.setItem('startDate', String(startDate));
-        localStorage.setItem('endDate', String(endDate));
+        sessionStorage.setItem('intervalId', String(interval));
+        sessionStorage.setItem('timeoutId', String(timeoutInterval));
+        sessionStorage.setItem('job', 'true');
+        sessionStorage.setItem('selectedTimeStart', selectedTimeStart);
+        sessionStorage.setItem('selectedTimeEnd', selectedTimeEnd);
+        sessionStorage.setItem('startDate', String(startDate));
+        sessionStorage.setItem('endDate', String(endDate));
     }
 
     const stopJob = () => {
-        clearInterval(Number(localStorage.getItem('intervalId')));
-        clearTimeout(Number(localStorage.getItem('timeoutId')));
+        clearInterval(Number(sessionStorage.getItem('intervalId')));
+        clearTimeout(Number(sessionStorage.getItem('timeoutId')));
 
-        localStorage.removeItem('intervalId');
-        localStorage.removeItem('timeoutId');
-        localStorage.removeItem('job');
-        localStorage.removeItem('selectedTimeStart');
-        localStorage.removeItem('selectedTimeEnd');
-        localStorage.removeItem('startDate');
-        localStorage.removeItem('endDate');
+        sessionStorage.removeItem('intervalId');
+        sessionStorage.removeItem('timeoutId');
+        sessionStorage.removeItem('job');
+        sessionStorage.removeItem('selectedTimeStart');
+        sessionStorage.removeItem('selectedTimeEnd');
+        sessionStorage.removeItem('startDate');
+        sessionStorage.removeItem('endDate');
 
         setSelectedTimeStart('');
         setSelectedTimeEnd('');

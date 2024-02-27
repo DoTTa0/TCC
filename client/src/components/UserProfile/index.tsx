@@ -14,7 +14,7 @@ interface UserProfileProps {
     disable?: boolean;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAddress, getUserType = Number(localStorage.getItem('userType')), disable = false}) => {
+const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAddress, getUserType = Number(sessionStorage.getItem('userType')), disable = false}) => {
 
     return (
         <UserProfileMain>

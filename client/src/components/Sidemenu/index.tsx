@@ -32,7 +32,7 @@ const Sidemenu = () => {
     const path = useLocation().pathname;
     return (
         <>
-            {callLevelAccess(Number(localStorage.getItem('userType')))}
+            {callLevelAccess(Number(sessionStorage.getItem('userType')))}
             {path !== '/' && path !== '/checkin' ?
                 <SideMenuMain>
                     <SideBarBackground>
@@ -47,7 +47,7 @@ const Sidemenu = () => {
                         <div>
                         {getSideBarData.map((item, index) => {
                             let path = item.path;
-                            if(item.title === 'Perfil') path = `${item.path}/${localStorage.getItem('id')}`;
+                            if(item.title === 'Perfil') path = `${item.path}/${sessionStorage.getItem('id')}`;
                             return (
                             <SidebarLink key={index} to={path}>
                                 <SidebarContent key={index}>
