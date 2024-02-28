@@ -13,6 +13,7 @@ interface IUser {
     nameMother: string;
     crm: string;
     address?: IAddress;
+    phoneEmergency: string;
 }
 
 export default IUser;

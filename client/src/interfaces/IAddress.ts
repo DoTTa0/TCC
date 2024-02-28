@@ -5,7 +5,8 @@ interface IAddress {
     city: string;
     state: string;
     cep: string;
-    complement: string
+    complement: string;
+    neighborhood: string;
 }
 
 export default IAddress;

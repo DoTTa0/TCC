@@ -1,8 +1,8 @@
 interface IPrescriptions {
     id: number;
     medicament: string;
-    intructions: string;
-    dosege: string;
+    instructions: string;
+    dosage: string;
 }
 
 export default IPrescriptions;

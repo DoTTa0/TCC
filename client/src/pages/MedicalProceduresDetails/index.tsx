@@ -76,8 +76,8 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             prescriptions: data.prescriptions?.map((item: any) => {
                 return {
                     id: item.id,
-                    dosege: item.dosege,
-                    intructions: item.intructions,
+                    dosage: item.dosage,
+                    instructions: item.instructions,
                     medicament: item.medicament
                 } as IPrescriptions
             }),
@@ -90,7 +90,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         }  as IMedicalProcedure 
 
         const dataPrescription: string | undefined = responseData.prescriptions === null ? '' :  responseData.prescriptions?.reduce((accumulator, currentValue) => {
-            const value = `${currentValue.medicament} X ${currentValue.dosege} - ${currentValue.intructions}`
+            const value = `${currentValue.medicament} X ${currentValue.dosage} - ${currentValue.instructions}`
             return accumulator + value + "\n";
           }, "");
 
@@ -116,8 +116,8 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
 
         const prescriptions = medicalProcedure.prescriptions?.map((item => {
             return {
-                dosage: item.dosege,
-                instructions: item.intructions,
+                dosage: item.dosage,
+                instructions: item.instructions,
                 medicament: item.medicament
             } as IPrescriptionsRequest
         }))
@@ -134,9 +134,9 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
 
     const getAppointments = (index : string): string => {
 
-        if(medicalProcedure.appointments && index === 'reason') return medicalProcedure.appointments[0].reason ?? '';
-        if(medicalProcedure.appointments && index === 'appointmentDate') return medicalProcedure.appointments[0].appointmentDate ?? '';
-        if(medicalProcedure.appointments && index === 'observations') return medicalProcedure.appointments[0].observations ?? '';
+        if(medicalProcedure.appointments && index === 'reason') return medicalProcedure.appointments[0]?.reason ?? '';
+        if(medicalProcedure.appointments && index === 'appointmentDate') return medicalProcedure.appointments[0]?.appointmentDate ?? '';
+        if(medicalProcedure.appointments && index === 'observations') return medicalProcedure.appointments[0]?.observations ?? '';
 
         return '';
     }
@@ -145,13 +145,13 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
 
         if (medicamento === '' || dose === '' || instucao === '') return;
         medicalProcedure.prescriptions?.push({
-            dosege: dose,
-            intructions: instucao,
+            dosage: dose,
+            instructions: instucao,
             medicament: medicamento
         } as IPrescriptions)
 
         const dataPrescription: string | undefined = medicalProcedure.prescriptions === null ? '' :  medicalProcedure.prescriptions?.reduce((accumulator, currentValue) => {
-            const value = `${currentValue.medicament} X ${currentValue.dosege} - ${currentValue.intructions}`
+            const value = `${currentValue.medicament} X ${currentValue.dosage} - ${currentValue.instructions}`
             return accumulator + value + "\n";
           }, "");
 
@@ -263,6 +263,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                     </DivButton>
                 </ExpandableComponent>
                 <ExpandableComponent title='Consultas'>
+                    {medicalProcedure.appointments && medicalProcedure.appointments?.length > 0 && 
                     <FormInfo>
                         <DivFormInfo>
                             <FormInfoItem width='50%'>
@@ -280,7 +281,8 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                                 <TextAreaComponent title='Observações' disable={true} value={getAppointments('observations')}/>
                             </FormInfoItem>
                         </DivFormInfo>
-                    </FormInfo>
+                    </FormInfo>}
+                    {!medicalProcedure.appointments || medicalProcedure.appointments?.length === 0 && <p>Sem consultas anteriores</p>}
                 </ExpandableComponent>
                 <ExpandableComponent title='Histórico médico'>
                     <FormInfo>
