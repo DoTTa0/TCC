@@ -41,8 +41,8 @@ class User extends BaseModel{
     @Column('int')
     userTypeId: number;
 
-    // @Column('varchar', { length: 15 })
-    // phoneEmergency: string;
+    @Column('varchar', { length: 15 })
+    phoneEmergency: string;
 
     //Relacionamentos
     @ManyToOne(type => UserType, userType => userType.users)

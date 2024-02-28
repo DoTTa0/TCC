@@ -8,16 +8,10 @@ class Prescriptions extends BaseModel {
     medicament: string;
 
     @Column('varchar', { length: 50 })
-    dosege: string;
-
-    // @Column('varchar', { length: 50 })
-    // dosage: string;
+    dosage: string;
 
     @Column('text')
-    intructions: string;
-
-    // @Column('text')
-    // instructions: string;
+    instructions: string;
 
     //Relacionamento
     @ManyToOne(type => MedicalProcedure, medicalProcedure => medicalProcedure.prescriptions) 

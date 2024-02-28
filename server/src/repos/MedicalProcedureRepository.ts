@@ -80,15 +80,15 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
                 medicalProcedure.prescriptions.forEach((el, index) => {
                     if (el.medicament.toLocaleLowerCase() === item.medicament.toLocaleLowerCase()) {
                         medicalProcedure.prescriptions[index].medicament = item.medicament;
-                        medicalProcedure.prescriptions[index].dosege = item.dosage;
-                        medicalProcedure.prescriptions[index].intructions = item.instructions;
+                        medicalProcedure.prescriptions[index].dosage = item.dosage;
+                        medicalProcedure.prescriptions[index].instructions = item.instructions;
                     }
                 });
             else 
                 medicalProcedure.prescriptions.push({
                     medicament: item.medicament,
-                    dosege: item.dosage,
-                    intructions: item.instructions
+                    dosage: item.dosage,
+                    instructions: item.instructions
                 } as Prescriptions);
         });
     }
