@@ -44,11 +44,15 @@ export const FormInfo = styled.form`
     align-items: center;
 `
 
-export const DivFormInfo = styled.div`
+interface DivFormInfoProps {
+    justifyContent?: string;
+  }
+
+export const DivFormInfo = styled.div<DivFormInfoProps>`
     padding: 20px 0px 0px 0px;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: ${({justifyContent = 'flex-start'}) => justifyContent};
 `
 
 interface FormInfoItemProps {

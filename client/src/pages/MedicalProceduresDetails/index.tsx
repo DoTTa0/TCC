@@ -11,12 +11,13 @@ import ExpandableComponent from "../../components/ExpandableComponent";
 import InputComponent from "../../components/InputComponent";
 import TitleComponent from "../../components/TitleComponent";
 import { BlockAddFile, Button, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, DownloadFile, ExamesInfo, FormInfo, FormInfoItem, InputAddFile, MedicalProceduresDetailsMain } from "./styles";
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaTrash } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
 import TextAreaComponent from "../../components/TextAreaComponent";
 import { format } from "date-fns";
 import { IoSend } from "react-icons/io5";
 import IPrescriptionsRequest from "../../interfaces/Request/IPrescriptionsRequest";
+import ModalComponent from "../../components/ModalComponent";
 
 interface MedicalProceduresDetailsProps {
     medicalProceduresId?: string;
@@ -30,8 +31,18 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     const [dose, setDose] = useState('');
     const [instucao, setInstrucao] = useState('');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [filesArray, setFilesArray] = useState<any>([])
+    const [filesArray, setFilesArray] = useState<any>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [indexMed, setIndexMed] = useState('');
 
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const getMedicalProceduresId = medicalProceduresId ? medicalProceduresId : id;
 
@@ -89,10 +100,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             patientName: data.patient.name
         }  as IMedicalProcedure 
 
-        const dataPrescription: string | undefined = responseData.prescriptions === null ? '' :  responseData.prescriptions?.reduce((accumulator, currentValue) => {
-            const value = `${currentValue.medicament} X ${currentValue.dosage} - ${currentValue.instructions}`
-            return accumulator + value + "\n";
-          }, "");
+        const dataPrescription =  setDataPrescription(responseData.prescriptions);
 
         await callListFile(responseData.folder);
         setPrescriptions(dataPrescription)
@@ -116,6 +124,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
 
         const prescriptions = medicalProcedure.prescriptions?.map((item => {
             return {
+                id: item.id,
                 dosage: item.dosage,
                 instructions: item.instructions,
                 medicament: item.medicament
@@ -145,33 +154,58 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
 
         if (medicamento === '' || dose === '' || instucao === '') return;
         medicalProcedure.prescriptions?.push({
+            id: 0,
             dosage: dose,
             instructions: instucao,
             medicament: medicamento
         } as IPrescriptions)
 
-        const dataPrescription: string | undefined = medicalProcedure.prescriptions === null ? '' :  medicalProcedure.prescriptions?.reduce((accumulator, currentValue) => {
-            const value = `${currentValue.medicament} X ${currentValue.dosage} - ${currentValue.instructions}`
-            return accumulator + value + "\n";
-          }, "");
+        const dataPrescription = setDataPrescription(medicalProcedure.prescriptions);
 
-          setPrescriptions(dataPrescription);
-          setMedicamento('');
-          setDose('');
-          setInstrucao('')
+        setPrescriptions(dataPrescription);
+        setMedicamento('');
+        setDose('');
+        setInstrucao('');
     }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const callListFile = async (folder: string) => {
-            const response = await api.get(`exames/list/${folder}`)
-                .then(success => success)
-                .catch(error => error.response)
-                .then(response => response)
+    const removePrescription = () => {
 
-            const { data } = response;
-        
-            setFilesArray(data)
-        }
+        if(!verificarNumero(indexMed)) return alert('Não é um número inteiro positivo') 
+
+        medicalProcedure.prescriptions?.splice((Number(indexMed)-1), 1);
+
+        const dataPrescription = setDataPrescription(medicalProcedure.prescriptions);
+
+        setPrescriptions(dataPrescription);
+        setMedicamento('');
+        setDose('');
+        setInstrucao('');
+        setIndexMed('');
+        handleCloseModal();
+    }
+
+    const verificarNumero = (string: string): boolean => {
+        return /^\d+$/.test(string);
+    }
+
+    const setDataPrescription = (data: IPrescriptions[] | undefined): string | undefined => {
+        return data === null ? '' :  data?.reduce((accumulator, currentValue, index) => {
+            const value = `${index + 1}) ${currentValue.medicament} X ${currentValue.dosage} - ${currentValue.instructions}`
+            return accumulator + value + "\n";
+          }, "");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const callListFile = async (folder: string) => {
+        const response = await api.get(`exames/list/${folder}`)
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response)
+
+        const { data } = response;
+    
+        setFilesArray(data)
+    }
 
     const addFiles = async (filesEvent: FileList | null) => {
 
@@ -180,18 +214,29 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         formData.append('folder', medicalProcedure.folder)
         files?.forEach((item) => formData.append('files', item))
 
-        const response = await api.post('exames/upload', formData,
+        await api.post('exames/upload', formData,
             { headers: { 'Content-Type': 'multipart/form-data' } })
             .then(success => success)
             .catch(error => error.response)
             .then(response => response)
 
-        console.log(response);
-
         setTimeout(async () => await callListFile(medicalProcedure.folder), 5000)
 
     }
     return (
+        <>
+        {isModalOpen && 
+        <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
+            <h2>Insira o número do medicamento que deseja remover</h2>
+            <DivFormInfo>
+                <FormInfoItem width='30%'>
+                    <InputComponent title='Índice'  value={indexMed}  setValue={setIndexMed}/>
+                </FormInfoItem>
+                <FormInfoItem width='5%'>
+                    <IoSend fontSize={30} cursor={'pointer'} color='red' onClick={removePrescription}/>
+                </FormInfoItem>
+            </DivFormInfo>
+        </ModalComponent>}
         <div className="page">
             <MedicalProceduresDetailsMain>
                 <TitleComponent title='Detalhes do procedimento' />
@@ -327,26 +372,35 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                 }
                 <ExpandableComponent title='Prescrisção Médica'>
                     <FormInfo>
+                    {getUserType === 2 && 
+                        <DivFormInfo justifyContent='flex-end'>
+                            <FormInfoItem width='5%'>
+                                <FaTrash fontSize={30} cursor={'pointer'} color='red' onClick={handleOpenModal}/>
+                            </FormInfoItem>
+                        </DivFormInfo>
+                    }
                         <DivFormInfo>
                             <FormInfoItem width='100%'>
                                 <TextAreaComponent title='' col={10} disable={true} nameObject={'medicalRecordDoctor'}  value={prescriptions ?? ''} setValue={setPrescriptions}/>
                             </FormInfoItem>
                         </DivFormInfo>
                         {getUserType === 2 &&
-                            <DivFormInfo>
-                                <FormInfoItem width='30%'>
-                                    <InputComponent title='Medicamento'  value={medicamento}  setValue={setMedicamento}/>
-                                </FormInfoItem>
-                                <FormInfoItem width='30%'>
-                                    <InputComponent title='Dose'  value={dose} setValue={setDose}/>
-                                </FormInfoItem>
-                                <FormInfoItem width='30%'>
-                                    <InputComponent title='Instruções'  value={instucao} setValue={setInstrucao}/>
-                                </FormInfoItem>
-                                <FormInfoItem width='5%'>
-                                    <IoSend fontSize={30} cursor={'pointer'} color={medicalProcedure.medicalProcedureSection} onClick={addPrescription}/>
-                                </FormInfoItem>
-                            </DivFormInfo>
+                        <>
+                        <DivFormInfo>
+                            <FormInfoItem width='30%'>
+                                <InputComponent title='Medicamento'  value={medicamento}  setValue={setMedicamento}/>
+                            </FormInfoItem>
+                            <FormInfoItem width='30%'>
+                                <InputComponent title='Dose'  value={dose} setValue={setDose}/>
+                            </FormInfoItem>
+                            <FormInfoItem width='30%'>
+                                <InputComponent title='Instruções'  value={instucao} setValue={setInstrucao}/>
+                            </FormInfoItem>
+                            <FormInfoItem width='5%'>
+                                <IoSend fontSize={30} cursor={'pointer'} color={medicalProcedure.medicalProcedureSection} onClick={addPrescription}/>
+                            </FormInfoItem>
+                        </DivFormInfo>
+                        </>
                         }
                     </FormInfo>
                 </ExpandableComponent>
@@ -358,6 +412,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                     </DivButton>}
             </MedicalProceduresDetailsMain>
         </div>
+        </>
     )
 }
 
