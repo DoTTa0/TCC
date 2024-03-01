@@ -72,26 +72,26 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
 
     medicalProcedure.medicalRecord.doctorRecord = req.medicalRecord?.doctorRecord ?? medicalProcedure.medicalRecord?.doctorRecord;
     medicalProcedure.medicalRecord.nurseRecord = req.medicalRecord?.nurseRecord ?? medicalProcedure.medicalRecord?.nurseRecord;
+   
+    //remove item
+    medicalProcedure.prescriptions.forEach((pre, index) => {
+        const somePrescription = req.prescriptions.some((item) => item.id === pre.id);
 
-    if (req.prescriptions.length > 0) {
-        req.prescriptions.forEach((item) => {
-            const filterPrescription = medicalProcedure.prescriptions.filter((pre) => pre.medicament.toLocaleLowerCase() === item.medicament.toLocaleLowerCase())[0];
-            if(filterPrescription)
-                medicalProcedure.prescriptions.forEach((el, index) => {
-                    if (el.medicament.toLocaleLowerCase() === item.medicament.toLocaleLowerCase()) {
-                        medicalProcedure.prescriptions[index].medicament = item.medicament;
-                        medicalProcedure.prescriptions[index].dosage = item.dosage;
-                        medicalProcedure.prescriptions[index].instructions = item.instructions;
-                    }
-                });
-            else 
-                medicalProcedure.prescriptions.push({
-                    medicament: item.medicament,
-                    dosage: item.dosage,
-                    instructions: item.instructions
-                } as Prescriptions);
-        });
-    }
+        if(!somePrescription) {
+            medicalProcedure.prescriptions.splice(index, 1);
+        }
+    });
+    //add novo item
+    req.prescriptions.forEach((item) => {
+        const newPrescription = item.id === 0;
+        if(newPrescription) {
+            medicalProcedure.prescriptions.push({
+                medicament: item.medicament,
+                dosage: item.dosage,
+                instructions: item.instructions
+            } as Prescriptions);
+        }
+    });
 
     await medicalProcedureRepository.save(medicalProcedure, {});
 
