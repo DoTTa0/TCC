@@ -100,8 +100,18 @@ const upload = async (req: Request, res: Response): Promise<any> => {
       return resFiles.data.files;
   }
 
+  const remove = async (fileId: string): Promise<any> => {
+
+    
+    const response = await drive.files.delete({ fileId });
+    
+
+    return response;
+}
+
 export default {
     upload,
     download, 
-    list
+    list,
+    remove
 };

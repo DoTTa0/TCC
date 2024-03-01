@@ -57,4 +57,16 @@ examesRouter.get('/list/:folder', async (req: Request, res: Response, next: Next
 
 });
 
+examesRouter.delete('/remove/:fileId', async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { fileId } = req.params;
+        const response = await ExamesService.remove(fileId);
+        
+        return res.status(204).end();
+    } catch (e) {
+        next(e);
+    }
+
+});
+
 export default examesRouter;
