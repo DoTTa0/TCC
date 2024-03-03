@@ -92,6 +92,4 @@ checkinRouter.get('/download', async (req: Request, res: Response, next: NextFun
    }
 });
 
-//Plano B: Fazer rota de Download a parte;
-
 export default checkinRouter;
