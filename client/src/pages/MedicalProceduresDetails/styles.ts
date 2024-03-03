@@ -99,7 +99,7 @@ export const ExamesInfo = styled.div`
 
 export const DivExamesInfo = styled.div`
     padding: 10px;
-    width: 10%;
+    width: 15%;
     display: flex;
     justify-content: flex-start;
     border-bottom: 2px solid black;

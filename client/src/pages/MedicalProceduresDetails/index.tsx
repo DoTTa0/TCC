@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import { IoSend } from "react-icons/io5";
 import IPrescriptionsRequest from "../../interfaces/Request/IPrescriptionsRequest";
 import ModalComponent from "../../components/ModalComponent";
+import Loading from "../../components/LoadingComponent";
 
 interface MedicalProceduresDetailsProps {
     medicalProceduresId?: string;
@@ -34,6 +35,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     const [filesArray, setFilesArray] = useState<any>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [indexMed, setIndexMed] = useState('');
+    const [loading, setLoading] = useState(false);
 
 
     const handleOpenModal = () => {
@@ -158,7 +160,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             dosage: dose,
             instructions: instucao,
             medicament: medicamento
-        } as IPrescriptions)
+        } as IPrescriptions);
 
         const dataPrescription = setDataPrescription(medicalProcedure.prescriptions);
 
@@ -208,7 +210,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     }
 
     const addFiles = async (filesEvent: FileList | null) => {
-
+        setLoading(true);
         const files = filesEvent !== null ? [...filesEvent] : [];
         const formData = new FormData()
         formData.append('folder', medicalProcedure.folder)
@@ -220,11 +222,28 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             .catch(error => error.response)
             .then(response => response)
 
-        setTimeout(async () => await callListFile(medicalProcedure.folder), 5000)
+            setTimeout(setFuncFile, 5000)
 
     }
+    const removeFile = async (fileId: string) => {
+        setLoading(true);
+        await api.delete(`exames/remove/${fileId}`)
+            .then(success => success)
+            .catch(error => error.response)
+            .then(response => response)
+
+        setTimeout(setFuncFile, 5000)
+    }
+
+    const setFuncFile = async () =>{
+        await callListFile(medicalProcedure.folder);
+        setLoading(false);
+    }
+
     return (
         <>
+        {loading && 
+        <Loading text="Aguarde, por favor..." />}
         {isModalOpen && 
         <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
             <h2>Insira o número do medicamento que deseja remover</h2>
@@ -290,6 +309,13 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                                     >
                                         {item.name}
                                     </DownloadFile>
+                                    <FaTrash 
+                                    fontSize={18} 
+                                    style={{marginLeft: "30px"}} 
+                                    cursor={'pointer'} 
+                                    color='red' 
+                                    onClick={async() => await removeFile(item.id)}
+                                    />
                                 </DivExamesInfo>
                             )
                             })
