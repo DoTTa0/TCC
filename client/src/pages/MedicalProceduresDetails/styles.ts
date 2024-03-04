@@ -64,6 +64,11 @@ export const FormInfoItem = styled.span<FormInfoItemProps>`
     margin-right: 30px;
 `
 
+export const FormInfoItemTag = styled.a<FormInfoItemProps>`
+    width: ${({width = '100%'}) => width};
+    margin-right: 30px;
+`
+
 interface CheckinProps {
     checkin: boolean;
   }

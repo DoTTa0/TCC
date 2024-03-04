@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { baseURL } from '../env/env';
 
 // Configuração da URL base da API
-const baseURL = 'http://localhost:3000/api';
 
 // Crie uma instância do axios com a URL base configurada
 const api = axios.create({

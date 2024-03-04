@@ -12,6 +12,7 @@ import InputComponent from "../../components/InputComponent";
 import TitleComponent from "../../components/TitleComponent";
 import { BlockAddFile, Button, Checkin, CheckinLabel, DivButton, DivExamesInfo, DivFormInfo, DownloadFile, ExamesInfo, FormInfo, FormInfoItem, InputAddFile, MedicalProceduresDetailsMain } from "./styles";
 import { FaCircle, FaTrash } from "react-icons/fa";
+import { FaFilePdf } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import TextAreaComponent from "../../components/TextAreaComponent";
 import { format } from "date-fns";
@@ -19,6 +20,7 @@ import { IoSend } from "react-icons/io5";
 import IPrescriptionsRequest from "../../interfaces/Request/IPrescriptionsRequest";
 import ModalComponent from "../../components/ModalComponent";
 import Loading from "../../components/LoadingComponent";
+import { baseURL } from "../../env/env";
 
 interface MedicalProceduresDetailsProps {
     medicalProceduresId?: string;
@@ -240,6 +242,20 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         setLoading(false);
     }
 
+    const downloadPrescription = ():void => {
+
+        if (medicalProcedure.prescriptions?.some((item) => item.id === 0)) {
+            return alert('Salve antes desta ação!');
+        }
+
+        const link = document.createElement('a');
+        link.href = `${baseURL}/medicalProcedures/download/${id}`;
+        // link.setAttribute('download', 'prescription.pdf');
+        link.setAttribute('target', "__blank");
+        document.body.appendChild(link);
+        link.click();
+    }
+
     return (
         <>
         {loading && 
@@ -399,11 +415,14 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                 <ExpandableComponent title='Prescrisção Médica'>
                     <FormInfo>
                     {getUserType === 2 && 
-                        <DivFormInfo justifyContent='flex-end'>
-                            <FormInfoItem width='5%'>
-                                <FaTrash fontSize={30} cursor={'pointer'} color='red' onClick={handleOpenModal}/>
-                            </FormInfoItem>
-                        </DivFormInfo>
+                    <DivFormInfo justifyContent='flex-end'>
+                        <FormInfoItem width='5%'>
+                            <FaFilePdf fontSize={30} cursor={'pointer'} color='#152C70' onClick={downloadPrescription}/>
+                        </FormInfoItem>
+                        <FormInfoItem width='5%'>
+                            <FaTrash fontSize={30} cursor={'pointer'} color='red' onClick={handleOpenModal}/>
+                        </FormInfoItem>
+                    </DivFormInfo>
                     }
                         <DivFormInfo>
                             <FormInfoItem width='100%'>
