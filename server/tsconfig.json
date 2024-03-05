@@ -14,10 +14,6 @@
       "noImplicitAny": true,
       "strictPropertyInitialization": false,
       "resolveJsonModule": true
-    },
-    "ts-node": {
-      "esm": true,
-      "experimentalSpecifierResolution": "node"
     }
   }
   
