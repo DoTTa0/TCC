@@ -10,7 +10,7 @@ class Appointments extends BaseModel {
     @Column('text')
     observations: string;
 
-    @Column('datetime')
+    @Column('timestamp')
     appointmentDate: Date;
 
     //Relacionamento
