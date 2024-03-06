@@ -14,7 +14,7 @@ class User extends BaseModel{
     @Column('varchar', { length: 255 })
     email: string;
 
-    @Column('date')
+    @Column('timestamp')
     birthDate: string;
 
     @Column('varchar', { length: 50 })

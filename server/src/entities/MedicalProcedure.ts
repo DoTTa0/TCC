@@ -12,10 +12,10 @@ class MedicalProcedure extends BaseModel{
     @Column('boolean')
     checkin: boolean;
 
-    @Column('datetime')
+    @Column('timestamp')
     checkinTime: Date;
 
-    @Column('datetime')
+    @Column('timestamp')
     procedureDate: Date;
 
     @Column('varchar', { length: 255 })
