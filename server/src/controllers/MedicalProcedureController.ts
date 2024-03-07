@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import MedicalProcedureRepository from '../repos/MedicalProcedureRepository';
 import MedicalProcedureRequest from '../models/Request/MedicalProcedureRequest';
-import path from 'path';
-import fs from 'fs';
-import { generatePrescriptionPDF } from '../helpers/PDF';
-import htmlPdf, { CreateOptions } from 'html-pdf';
+import { generatePDF, generatePrescriptionTemplate } from '../helpers/PDF';
 
 
 
@@ -58,25 +55,18 @@ medicalHistoryRouter.get('/download/:id', async (req: Request, res: Response, ne
         const medicalProcedure = await MedicalProcedureRepository.getById(Number(id));
         if (!medicalProcedure) throw Error('Proedimento não encotrado.');
 
-        const html =  generatePrescriptionPDF(medicalProcedure);
+        const html =  generatePrescriptionTemplate(medicalProcedure);
 
-        // const file = path.resolve(
-        //   __dirname,
-        //   '..',
-        //   'config'
-        // );
-
-        const options = {
-          format: 'A4',
-        } as CreateOptions;
-
-        console.log(html);
-        htmlPdf.create(html, options).toStream(((err, stream) => {
-          if (err) return res.send(err);
-          res.setHeader('Content-disposition', 'inline; filename="prescription.pdf"');
-          res.setHeader('Content-type', 'application/pdf');
-          stream.pipe(res);  
-      }));
+        const pdf = await generatePDF(html);
+        // Enviando o PDF como resposta
+        res.set({
+            'Content-Type': 'application/pdf',
+            // 'Content-Length': pdfBuffer.length,
+            'Content-Disposition': 'inline; filename="prescription.pdf"'
+        });
+        res.send(pdf.buffer);
+        // Fechando o navegador
+        await pdf.browser.close();
   
      } catch (e) {
        next(e);

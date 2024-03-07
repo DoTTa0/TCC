@@ -66,14 +66,25 @@ const CheckinPage = () => {
     }
 
     const updateCheckin = async () => {
-        const response = await api.put(`checkin/checkin`, createRequest())
+        const response = await api.put(`checkin/checkin`, createRequest(),{
+            responseType: 'blob', // Indica ao axios que a resposta é um blob (arquivo)
+          })
             .then(success => success)
             .catch(error => error.response)
             .then(response => response);
 
             if (response.status === 200 || response.status === 204 ) {
 
-                await downloadCheckin();
+                // Cria um URL temporário para o blob recebido
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                
+                // Cria um link temporário e simula o clique para iniciar o download
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'patient.pdf');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode?.removeChild(link);
 
                 setShowError(false);
                 setShowInit(false);

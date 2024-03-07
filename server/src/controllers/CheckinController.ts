@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import CheckinService from '../services/CheckinService';
 import CheckinRequest from '../models/Request/CheckinRequest';
 import CheckinResponse from '../models/Response/CheckinResponse';
-import { generateCheckinPDF } from '../helpers/PDF';
+import { generateCheckinTemplate, generatePDF } from '../helpers/PDF';
 import fs from 'fs';
 import path from 'path';
 
@@ -28,28 +28,21 @@ checkinRouter.put('/checkin', async (req: TypedRequest<CheckinRequest>, res: Res
    try {
       const { body: model } = req; 
       const response = await CheckinService.checkin(model);
-      generateCheckinPDF(response);
-      // const promise = new Promise((resolve, reject) => {
-      //   res.download(tempFile, (err) => {
-      //     if (err) {
-      //       console.log(err);
-      //     }
-      //     if (fs.existsSync(tempFile)) {
-      //       fs.unlinkSync(tempFile);
-      //     }
-      //   });
-      // })
-
-      // await Promise.all([
-      //   promise
-      // ]).finally(() => {
-      //   if (fs.existsSync(tempFile)) {
-      //     fs.unlinkSync(tempFile);
-      //   }
-      // });
+      const html = generateCheckinTemplate(response);
+    
+      const pdf = await generatePDF(html);
+      // Enviando o PDF como resposta
+      res.set({
+          'Content-Type': 'application/pdf',
+          // 'Content-Length': pdfBuffer.length,
+          'Content-Disposition': 'attachment; filename="patient.pdf"'
+      });
+      res.send(pdf.buffer);
+      // Fechando o navegador
+      await pdf.browser.close();
 
       
-      return res.status(200).json(response);
+      //return res.status(200).json(response);
     } catch (e) {
       next(e);
     }

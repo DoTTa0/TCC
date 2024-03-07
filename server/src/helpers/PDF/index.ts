@@ -3,9 +3,15 @@ import path from 'path';
 import CheckinResponse from '../../models/Response/CheckinResponse';
 import MedicalProcedure from '../../entities/MedicalProcedure';
 import fs from 'fs';
+import puppeteer, { Browser } from 'puppeteer';
+
+interface PDFResponse  {
+  browser: Browser;
+  buffer: Buffer
+}
 
 
-const generateCheckinPDF = (model: CheckinResponse): string => {
+const generateCheckinTemplate = (model: CheckinResponse): string => {
   const { patient, medicalProcedure } = model;
   const { medicalProcedureType } = medicalProcedure;
   const { medicalProcedureSection } = medicalProcedureType;
@@ -14,64 +20,35 @@ const generateCheckinPDF = (model: CheckinResponse): string => {
   <html>
     <head>
       <style>
-        .circle {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          background-color: ${medicalProcedureSection.color};
+        html {
+          -webkit-print-color-adjust: exact;
         }
+        .a4-retangle {
+          width: 200mm; /* Largura de um A4 em milímetros */
+          height: 30px; /* Altura de um A4 em milímetros */
+          background-color: ${medicalProcedureSection.color};
+      }
       </style>
     </head>
     <body>
       <div>
-        <div>Paciente: ${patient.name}</div>
-        <div>Nome da mãe: ${patient.nameMother}</div>
-        <div>Data de nascimento: ${new Date(patient.birthDate).toLocaleDateString('pt-BR')}</div>
-        <div>Data: ${new Date(medicalProcedure.procedureDate).toLocaleDateString('pt-BR')}</div>
+        <div><strong>Paciente:</strong> ${patient.name}</div>
+        <div><strong>Nome da mãe:</strong> ${patient.nameMother}</div>
+        <div><strong>Data de nascimento:</strong> ${new Date(patient.birthDate).toLocaleDateString('pt-BR')}</div>
+        <div><strong>Data:</strong> ${new Date(medicalProcedure.procedureDate).toLocaleDateString('pt-BR')}</div>
         <div>
-          <div class="circle"></div>
+          <div class="a4-retangle"></div>
         </div>
       </div>
     </body>
   </html>
 `;
 
-const options = {
-  height: '11.25in',
-  width: '8.5in',
-  header: {
-    height: '1in',
-  },
-  footer: {
-    height: '1in',
-  },
-};
-
-const tempFile = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'uploads',
-  'temp',
-  `patient.pdf`
-);
-
-
-htmlPdf.create(htmlTemplate, options).toFile(tempFile, (err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('PDF gerado com sucesso');
-    }
-});
-
-
-return tempFile;
+return htmlTemplate;
 
 }
 
-const generatePrescriptionPDF = (model: MedicalProcedure): string => {
+const generatePrescriptionTemplate = (model: MedicalProcedure): string => {
   const { patient, doctor, prescriptions } = model;
   const today = new Date();
 
@@ -172,7 +149,24 @@ const getImageBase64 = (path:string) => {
   return Buffer.from(imageBuffer).toString('base64');
 }
 
+const generatePDF = async (html: string): Promise<PDFResponse> => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Definindo o conteúdo HTML da página
+  await page.setContent(html);
+
+  // Gerando o PDF
+  const pdfBuffer = await page.pdf({ format: 'A4' });
+
+  return {
+    browser,
+    buffer: pdfBuffer
+  } as PDFResponse
+}
+
 export {
-    generateCheckinPDF,
-    generatePrescriptionPDF
+    generateCheckinTemplate,
+    generatePrescriptionTemplate,
+    generatePDF
 }
