@@ -60,16 +60,17 @@ medicalHistoryRouter.get('/download/:id', async (req: Request, res: Response, ne
 
         const html =  generatePrescriptionPDF(medicalProcedure);
 
-        const file = path.resolve(
-          __dirname,
-          '..',
-          'config'
-        );
+        // const file = path.resolve(
+        //   __dirname,
+        //   '..',
+        //   'config'
+        // );
 
         const options = {
           format: 'A4',
         } as CreateOptions;
 
+        console.log(medicalProcedure);
         htmlPdf.create(html, options).toStream(((err, stream) => {
           if (err) return res.send(err);
           res.setHeader('Content-disposition', 'inline; filename="prescription.pdf"');
