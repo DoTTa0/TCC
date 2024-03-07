@@ -15,8 +15,6 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-console.log(process.env.DB_HOST)
-
 AppDataSource.initialize().then(async () => {
   console.log('Database OK');
   app.listen(PORT, () => {

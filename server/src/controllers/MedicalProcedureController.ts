@@ -70,7 +70,7 @@ medicalHistoryRouter.get('/download/:id', async (req: Request, res: Response, ne
           format: 'A4',
         } as CreateOptions;
 
-        console.log(medicalProcedure);
+        console.log(html);
         htmlPdf.create(html, options).toStream(((err, stream) => {
           if (err) return res.send(err);
           res.setHeader('Content-disposition', 'inline; filename="prescription.pdf"');
