@@ -48,41 +48,4 @@ checkinRouter.put('/checkin', async (req: TypedRequest<CheckinRequest>, res: Res
     }
 });
 
-checkinRouter.get('/download', async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  try {
-
-    const tempFile = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      'uploads',
-      'temp',
-      `patient.pdf`
-    );
-    
-     const promise = new Promise((resolve, reject) => {
-       res.download(tempFile, (err) => {
-         if (err) {
-           console.log(err);
-         }
-         if (fs.existsSync(tempFile)) {
-           fs.unlinkSync(tempFile);
-         }
-       });
-     })
-
-     await Promise.all([
-       promise
-     ]).finally(() => {
-       if (fs.existsSync(tempFile)) {
-         fs.unlinkSync(tempFile);
-       }
-     });
-
-     
-   } catch (e) {
-     next(e);
-   }
-});
-
 export default checkinRouter;
