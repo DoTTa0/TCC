@@ -55,21 +55,18 @@ export const LabelCPF = styled.label`
     position: absolute;
     pointer-events: none;
     left: 10px;
-    top: 30px;
-    transition: 0.5s ease all;
+    //top: 30px;
+    top: 5px;
+    //font-size: 16px;
+    //color: #109CF1;
+    font-style: italic;
+    transition: 0.5s;
 
     ${InputCPF}:focus ~ & {
-        top: 5px;
-        font-size: 16px;
+        /* top: 5px;
+        font-size: 16px; */
         color: #109CF1;
-        font-style: italic;
-    }
-    
-    ${InputCPF}:valid ~ &{
-        top: 5px;
-        font-size: 16px;
-        /*color: #336699;*/
-        font-style: italic;
+        /* font-style: italic; */
     }
 `
 

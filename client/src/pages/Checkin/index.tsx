@@ -12,6 +12,7 @@ import IUser from "../../interfaces/IUser";
 import IAddress from "../../interfaces/IAddress";
 import IMedicalProcedure from "../../interfaces/IMedicalProcedure";
 import { format } from "date-fns";
+import { cpfMask } from "../../services/cpfMask";
 
 const CheckinPage = () => {
     const [cpf, setCpf] = useState('');
@@ -120,7 +121,7 @@ const CheckinPage = () => {
                 <TitleComponent title='Check-In' />
                 <FormCPF>
                     <DivFormCPF>
-                        <InputCPF type='text' required value={cpf} onChange={(event) => setCpf(event.target.value)}/>
+                        <InputCPF type='text' required value={cpf} maxLength={14} placeholder="000.000.000-00" onChange={(event) => setCpf(cpfMask(event.target.value))}/>
                         <LabelCPF>CPF</LabelCPF>
                     </DivFormCPF>
                     

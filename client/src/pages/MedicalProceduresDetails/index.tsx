@@ -107,7 +107,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         const dataPrescription =  setDataPrescription(responseData.prescriptions);
 
         await callListFile(responseData.folder);
-        setPrescriptions(dataPrescription)
+        setPrescriptions(dataPrescription);
         setMedicalProcedure(responseData);
     }
 
@@ -117,7 +117,10 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             .catch(error => error.response)
             .then(response => response);
 
-            if (response.status === 200) return alert('Procedimento atualizado!')
+            if (response.status === 200) {
+                alert('Procedimento atualizado!')
+                await callMedicalProcedureById();
+            }
     }
 
     const createRequest = (): IMedicalProcedureRequest => {
@@ -259,7 +262,8 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     return (
         <>
         {loading && 
-        <Loading text="Aguarde, por favor..." />}
+            <Loading text="Aguarde, por favor..." />
+        }
         {isModalOpen && 
         <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal}>
             <h2>Insira o número do medicamento que deseja remover</h2>

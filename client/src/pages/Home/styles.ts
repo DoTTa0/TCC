@@ -35,6 +35,7 @@ export const CardsUsers = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-flow: row wrap;
   width: 30%;
   height: 100%;
   padding: 20px;
@@ -66,6 +67,7 @@ export const CardCheckin = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-flow: row wrap;
   width: 50%;
   height: 100%;
   padding: 20px;
@@ -78,7 +80,7 @@ export const CardCheckin = styled(Link)`
   color: #152C70;
   font-size: 80px;
   margin: 50px;
-
+  text-decoration: none;
 
   &:hover{
         background: #152C70;
@@ -134,21 +136,18 @@ export const LabelCPF = styled.label`
     position: absolute;
     pointer-events: none;
     left: 10px;
-    top: 30px;
-    transition: 0.5s ease all;
+    //top: 30px;
+    top: 5px;
+    //font-size: 16px;
+    //color: #109CF1;
+    font-style: italic;
+    transition: 0.5s;
 
     ${InputCPF}:focus ~ & {
-        top: 5px;
-        font-size: 16px;
+        /* top: 5px;
+        font-size: 16px; */
         color: #109CF1;
-        font-style: italic;
-    }
-    
-    ${InputCPF}:valid ~ &{
-        top: 5px;
-        font-size: 16px;
-        /*color: #336699;*/
-        font-style: italic;
+        /* font-style: italic; */
     }
 `
 
@@ -169,4 +168,9 @@ export const ButtonCPF = styled.button`
     &:hover {
         color: #109CF1;
     }
+`
+export const NameCards = styled.span`
+    font-size: 32px;
+    width: 100%;
+    text-align: center;
 `

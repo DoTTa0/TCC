@@ -1,10 +1,11 @@
 import { useState } from "react";
 import ModalComponent from "../../components/ModalComponent";
-import { ButtonCPF, CardCheckin, CardsRowCheckin, CardsRowUser, CardsSection, CardsUsers, DivFormCPF, FormCPF, HomeMain, InputCPF, LabelCPF, TittleLabel } from "./styles";
+import { ButtonCPF, CardCheckin, CardsRowCheckin, CardsRowUser, CardsSection, CardsUsers, DivFormCPF, FormCPF, HomeMain, InputCPF, LabelCPF, NameCards, TittleLabel } from "./styles";
 import * as FaIcons from 'react-icons/fa'
 import { IoIosArrowForward } from "react-icons/io";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { cpfMask } from "../../services/cpfMask";
 
 
 const HomePage = () => {
@@ -53,7 +54,7 @@ const HomePage = () => {
             <h2>Insira seu CPF</h2>
             <FormCPF>
             <DivFormCPF>
-                <InputCPF type='text' required value={cpf} onChange={(event) => setCpf(event.target.value)}/>
+                <InputCPF type='text' required value={cpf} maxLength={14} placeholder="000.000.000-00" onChange={(event) => setCpf(cpfMask(event.target.value))}/>
                 <LabelCPF>CPF</LabelCPF>
             </DivFormCPF>
             
@@ -66,13 +67,28 @@ const HomePage = () => {
                 <TittleLabel>Ecossistema</TittleLabel>
                 <CardsSection>
                     <CardsRowUser>
-                        <CardsUsers onClick={() => handleValidateUser('1', '/users')}><FaIcons.FaHospitalUser /></CardsUsers>
-                        <CardsUsers onClick={() => handleValidateUser('2', '/medicalProcedures')}><FaIcons.FaUserMd /></CardsUsers>
-                        <CardsUsers onClick={() => handleValidateUser('3', '/medicalProcedures')}><FaIcons.FaUserNurse /></CardsUsers>
-                        <CardsUsers onClick={() => handleValidateUser('4', '/medicalProcedures')}><FaIcons.FaUserInjured /></CardsUsers>
+                        <CardsUsers onClick={() => handleValidateUser('1', '/users')}>
+                            <FaIcons.FaHospitalUser />
+                            <NameCards>Admin</NameCards>
+                        </CardsUsers>
+                        <CardsUsers onClick={() => handleValidateUser('2', '/medicalProcedures')}>
+                            <FaIcons.FaUserMd />
+                            <NameCards>Médico</NameCards>
+                        </CardsUsers>
+                        <CardsUsers onClick={() => handleValidateUser('3', '/medicalProcedures')}>
+                            <FaIcons.FaUserNurse />
+                            <NameCards>Enfermeiro</NameCards>
+                        </CardsUsers>
+                        <CardsUsers onClick={() => handleValidateUser('4', '/medicalProcedures')}>
+                            <FaIcons.FaUserInjured />
+                            <NameCards>Paciente</NameCards>
+                        </CardsUsers>
                     </CardsRowUser>
                     <CardsRowCheckin>
-                        <CardCheckin to='/checkin'><FaIcons.FaUserCheck /></CardCheckin>
+                        <CardCheckin to='/checkin'>
+                            <FaIcons.FaUserCheck />
+                            <NameCards>Check-in</NameCards>
+                        </CardCheckin>
                     </CardsRowCheckin>
                 </CardsSection>
 

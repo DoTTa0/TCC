@@ -20,17 +20,17 @@ export const Overlay = styled.div`
 `;
 
 export const Spinner = styled.div`
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  border: 4px solid rgba(240, 240, 240, 0.5);
   border-left-color: #152C70;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: ${spin} 1s linear infinite;
   z-index: 1000; /* Coloca o overlay acima de tudo */
-
+  margin-left: 40px;
 `;
 
-export const Text = styled.p`
+export const Text = styled.div`
   margin-top: 10px;
   color: #fff; /* Cor do texto */
 `;
