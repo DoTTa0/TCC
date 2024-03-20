@@ -47,6 +47,13 @@ const HomePage = () => {
         setUserTypeId(userType);
         handleOpenModal();
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleKeyPress = async (event: { preventDefault: any; key: string; }) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            await callUserByCpfAndUserTypeId();
+        }
+    };
     return (
     <>
         {isModalOpen && 
@@ -54,11 +61,11 @@ const HomePage = () => {
             <h2>Insira seu CPF</h2>
             <FormCPF>
             <DivFormCPF>
-                <InputCPF type='text' required value={cpf} maxLength={14} placeholder="000.000.000-00" onChange={(event) => setCpf(cpfMask(event.target.value))}/>
+                <InputCPF type='text' onKeyDown={handleKeyPress} required value={cpf} maxLength={14} placeholder="000.000.000-00" onChange={(event) => setCpf(cpfMask(event.target.value))}/>
                 <LabelCPF>CPF</LabelCPF>
             </DivFormCPF>
             
-            <ButtonCPF type="button" onClick={callUserByCpfAndUserTypeId}><IoIosArrowForward /></ButtonCPF>
+            <ButtonCPF type="submit"  onClick={callUserByCpfAndUserTypeId}><IoIosArrowForward /></ButtonCPF>
         </FormCPF>
         </ModalComponent>}
         <div className="page">
