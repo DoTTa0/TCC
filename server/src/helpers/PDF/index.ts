@@ -82,6 +82,10 @@ const generatePrescriptionTemplate = (model: MedicalProcedure): string => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Receituário Médico</title>
         <style>
+            @page {
+              size: A4;
+              margin: 2cm;
+            }
             body {
                 font-family: Arial, sans-serif;
             }
@@ -104,9 +108,9 @@ const generatePrescriptionTemplate = (model: MedicalProcedure): string => {
                 text-align: right;
             }
             .logo {
-                position: absolute;
-                top: 20px;
-                right: 20px;
+                position: relative;
+                top: 0px;
+                left: 500px;
                 width: 100px; /* Ajuste o tamanho conforme necessário */
                 height: 100px;
             }
