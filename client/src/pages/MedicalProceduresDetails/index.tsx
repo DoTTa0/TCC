@@ -38,6 +38,8 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [indexMed, setIndexMed] = useState('');
     const [loading, setLoading] = useState(false);
+    const [remove, setRemove] = useState(false);
+    const [idFile, setIdFile] = useState('');
 
 
     const handleOpenModal = () => {
@@ -232,6 +234,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
     }
     const removeFile = async (fileId: string) => {
         setLoading(true);
+        setRemove(false);
         await api.delete(`exames/remove/${fileId}`)
             .then(success => success)
             .catch(error => error.response)
@@ -259,6 +262,15 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         link.click();
     }
 
+    const handleRemoveFileModal = (file: string) => {
+        setRemove(true);
+        setIdFile(file);
+    }
+
+    const handleCloseRemoveModal = () => {
+        setRemove(false);
+    };
+
     return (
         <>
         {loading && 
@@ -273,6 +285,22 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                 </FormInfoItem>
                 <FormInfoItem width='5%'>
                     <IoSend fontSize={30} cursor={'pointer'} color='red' onClick={removePrescription}/>
+                </FormInfoItem>
+            </DivFormInfo>
+        </ModalComponent>}
+        {remove && 
+        <ModalComponent isOpen={remove} onClose={handleCloseRemoveModal}>
+            <h2>Tem certeza que deseja remover o item?</h2>
+            <DivFormInfo>
+                <FormInfoItem width='100%'>
+                    <Button onClick={async() => await removeFile(idFile)}>
+                        Sim
+                    </Button>
+                </FormInfoItem>
+                <FormInfoItem width='100%'>
+                    <Button backgroundColor="red" onClick={handleCloseRemoveModal}>
+                        Não
+                    </Button>
                 </FormInfoItem>
             </DivFormInfo>
         </ModalComponent>}
@@ -334,7 +362,7 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
                                     style={{marginLeft: "30px"}} 
                                     cursor={'pointer'} 
                                     color='red' 
-                                    onClick={async() => await removeFile(item.id)}
+                                    onClick={() => handleRemoveFileModal(item.id)}
                                     />
                                 </DivExamesInfo>
                             )

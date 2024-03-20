@@ -6,6 +6,7 @@ import { DivButton, MedicalProcedureMain } from "./styles";
 import api from "../../services/api";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import Loading from "../../components/LoadingComponent";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export interface ListMedicalProcedures {
@@ -23,6 +24,8 @@ const MedicalProcedeuresPage = () => {
     const [listAll, setListAll] = useState<ListMedicalProcedures[]>([]);
     const [getUserType] = useState(Number(sessionStorage.getItem('userType')));
     const [getUserId] = useState(sessionStorage.getItem('id'));
+    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         const init = async () =>  await callListAll();
@@ -58,16 +61,30 @@ const MedicalProcedeuresPage = () => {
 
         setListAll(response)
     }
+
+    const handleSearch = async () => {
+        setLoading(true);
+        await callListAll();
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
     return (
+        <>
+        {loading && 
+            <Loading text="Aguarde, por favor..." />
+        }
         <div className="page">
             <MedicalProcedureMain>
                 <TitleComponent title='Procedimentos' />
                 <DivButton>
-                    <ButtonComponent icon={<IoSearch />} text='Pesquisar' onClick={async () => await callListAll()}/>
+                    <ButtonComponent icon={<IoSearch />} text='Pesquisar' onClick={handleSearch}/>
                 </DivButton>
                 <MedicalProcedureTableComponent data={listAll} />
             </MedicalProcedureMain>
         </div>
+        </>
+        
     );
 }
 

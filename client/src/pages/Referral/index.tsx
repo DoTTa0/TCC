@@ -11,6 +11,7 @@ import ButtonComponent from "../../components/ButtonComponent";
 import { IoSearch } from "react-icons/io5";
 import IReferralRequest from "../../interfaces/Request/IReferralRequest";
 import { IReferralJob } from "../../interfaces/IReferralJob";
+import Loading from "../../components/LoadingComponent";
 
 
 const ReferralPage = () => {
@@ -30,6 +31,8 @@ const ReferralPage = () => {
     const [endDate, setEndDate] = useState<Date>();
     const [job, setJob] = useState(getJobsessionStorage());
     const [listReferral, setListReferral] = useState<IReferralJob[]>([]);
+    const [loading, setLoading] = useState(false);
+
     // const [intervalId, setIntervalId] = useState(0);
     // const [timeoutId, setTimeoutId] = useState(0);
 
@@ -161,9 +164,23 @@ const ReferralPage = () => {
         setListReferral(data);
         console.log(response);
     }
+
+    const handleSearch = async () => {
+        if (!(startDate instanceof Date) && !(endDate instanceof Date)) return alert('Selecione um horário válido.');
+        if (startDate && endDate && startDate > endDate ) return alert('Selecione um horário de início maior que o de final.');
+        setLoading(true);
+        await handleButton();
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
     
     return (
-        <div className="page">
+        <>
+        {loading && 
+            <Loading text="Aguarde, por favor..." />
+        }
+                <div className="page">
             <ReferralMain>
                 <TitleComponent title='Encaminhamento' />
                 <TimePickerContainer>
@@ -194,7 +211,7 @@ const ReferralPage = () => {
                         <FaRegClock color="#152C70" fontSize={25}/>
                     </DivTime>
                     
-                    <ButtonComponent disable={job} icon={<IoSearch />} text='Pesquisar' onClick={async () => await handleButton()}/>
+                    <ButtonComponent disable={job} icon={<IoSearch />} text='Pesquisar' onClick={handleSearch}/>
                     
 
                     {listAll.length > 0 &&
@@ -223,6 +240,8 @@ const ReferralPage = () => {
                 }
             </ReferralMain>
         </div>
+        </>
+
     );
 }
 

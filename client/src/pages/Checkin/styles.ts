@@ -46,8 +46,6 @@ export const InputCPF = styled.input`
        
 `
 
-
-
 export const LabelCPF = styled.label`
     color: black;
     font-size: 18px;

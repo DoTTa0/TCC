@@ -5,6 +5,7 @@ import TitleComponent from "../../components/TitleComponent";
 import UsersTableComponent from "../../components/UsersTableComponent";
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import Loading from "../../components/LoadingComponent";
 
 interface ListUser {
         space: string;
@@ -17,6 +18,8 @@ interface ListUser {
 
 const UsersPage = () => {
     const[listAll, setListAll] = useState<ListUser[]>([]);
+    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         const init = async () =>  await callListAll();
@@ -46,17 +49,31 @@ const UsersPage = () => {
         setListAll(response)
     }
 
+    const handleSearch = async () => {
+        setLoading(true);
+        await callListAll();
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
 
     return (
+        <>
+        {loading && 
+            <Loading text="Aguarde, por favor..." />
+        }
         <div className="page">
             <UsersMain>
                 <TitleComponent title='Usuários' />
                 <DivButton>
-                    <ButtonComponent icon={<IoSearch />} text='Pesquisar' onClick={async () => await callListAll()}/>
+                    <ButtonComponent icon={<IoSearch />} text='Pesquisar' onClick={handleSearch}/>
                 </DivButton>
                 <UsersTableComponent data={listAll} />
             </UsersMain>
         </div>
+        </>
+        
     );
 }
 

@@ -14,12 +14,16 @@ export const DivButton = styled.div`
     width: 100%;
 `
 
-export const Button = styled.button`
+interface ButtonProps {
+    backgroundColor?: string;
+  }
+
+export const Button = styled.button<ButtonProps>`
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #152C70;
+    background-color:${({backgroundColor = '#152C70'}) => backgroundColor};
     width: 20%;
     height: 40px;
     border: none;
@@ -104,7 +108,8 @@ export const ExamesInfo = styled.div`
 
 export const DivExamesInfo = styled.div`
     padding: 10px;
-    width: 15%;
+    min-width: 164px;
+    max-width: 164px;
     display: flex;
     justify-content: flex-start;
     border-bottom: 2px solid black;
