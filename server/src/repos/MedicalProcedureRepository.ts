@@ -115,9 +115,9 @@ const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedur
         relations
     });
 
-    const response = medicalProcedure === null ? new MedicalProcedure() : medicalProcedure;
-
-    return response;
+    if (medicalProcedure === null)
+        throw new Error("Nenhum procedimento encontrado!");
+    return medicalProcedure;
 }
 
 const editCheckin = async (id:number): Promise<MedicalProcedure> => {
