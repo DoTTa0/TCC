@@ -99,7 +99,7 @@ const edit = async (id:number, req: MedicalProcedureRequest): Promise<MedicalPro
 }
 
 const getByPatientToCheckin = async (patientId: number): Promise<MedicalProcedure> => {
-    const today = new Date(Date.now());
+    const today = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Sao_Paulo'}));
     const day = today.getDate();
     const month  = today.getMonth() + 1;
     const year = today.getFullYear();
