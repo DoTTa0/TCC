@@ -65,7 +65,7 @@ const HomePage = () => {
                 <LabelCPF>CPF</LabelCPF>
             </DivFormCPF>
             
-            <ButtonCPF type="submit"  onClick={callUserByCpfAndUserTypeId}><IoIosArrowForward /></ButtonCPF>
+            <ButtonCPF type="button"  onClick={callUserByCpfAndUserTypeId}><IoIosArrowForward /></ButtonCPF>
         </FormCPF>
         </ModalComponent>}
         <div className="page">

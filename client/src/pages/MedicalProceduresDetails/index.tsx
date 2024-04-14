@@ -69,21 +69,21 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
         console.log(data)
         const responseData = {
             checkin: data.checkin,
-            checkinTime: data.checkinTime ? format(data.checkinTime, 'HH:mm') : '-',
+            checkinTime: data.checkinTime ? format(new Date(data.checkinTime.replace('Z', '')), 'HH:mm') : '-',
             doctorName: data.doctor.name,
             folder: data.folder,
             id: data.id,
             medicalProcedureName: data.medicalProcedureType.name,
             medicalProcedureSection: data.medicalProcedureType.medicalProcedureSection.color,
             nurseName: data.nurse.name,
-            procedureDate: format(data.procedureDate, 'dd/MM/yyyy'),
-            procedureHour: format(data.procedureDate, 'HH:mm'),
+            procedureDate: format(new Date(data.procedureDate.replace('Z', '')), 'dd/MM/yyyy'),
+            procedureHour: format(new Date(data.procedureDate.replace('Z', '')), 'HH:mm'),
             medcialRecordNurse: data.medicalRecord?.nurseRecord ?? '',
             medicalRecordDoctor: data.medicalRecord?.doctorRecord ?? '',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             appointments: data.appointments?.map((item: any) => {
                 return {
-                    appointmentDate: format(item.appointmentDate, 'dd/MM/yyyy'),
+                    appointmentDate: format(new Date(item.appointmentDate.replace('Z', '')), 'dd/MM/yyyy'),
                     id: item.id,
                     observations: item.observations,
                     reason: item.reason

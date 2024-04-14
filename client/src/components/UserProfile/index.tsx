@@ -25,7 +25,7 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                             <InputComponent title='Nome Completo' disable={disable} value={user.name} object={user} nameObject={'name'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Data de nascimento' disable={disable} value={user.birthDate} object={user} nameObject={'birthDate'} setValue={setUser}/>
+                            <InputComponent title='Data de nascimento' disable={true} value={user.birthDate} object={user} nameObject={'birthDate'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
                             <InputComponent title='Nome da mãe' disable={disable} value={user.nameMother} object={user} nameObject={'nameMother'} setValue={setUser}/>
@@ -45,7 +45,7 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                             <InputComponent title='Telefone' disable={disable} value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Telefone de emergência' disable={disable} value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
+                            <InputComponent title='Telefone de emergência' disable={disable} value={user.phoneEmergency} object={user} nameObject={'phone'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='15%'>
                             <InputComponent title='Sexo' disable={disable} value={user.gender} object={user} nameObject={'gender'} setValue={setUser}/>
@@ -82,9 +82,9 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                         <FormInfoItem width='15%'>
                             <InputComponent title='CEP' disable={disable} value={address.cep ?? ''} object={address} nameObject={'cep'} setValue={setAddress}/>
                         </FormInfoItem>
-                        {/* <FormInfoItem width='20%'>
-                            <InputComponent title='Bairro' value={user.address.} setValue={setName}/>
-                        </FormInfoItem> */}
+                        <FormInfoItem width='20%'>
+                            <InputComponent title='Bairro' disable={disable} value={address.neighborhood ?? ''} object={address} nameObject={'neighborhood'} setValue={setAddress}/>
+                        </FormInfoItem>
                     </DivFormInfo>
                     <DivFormInfo>
                         <FormInfoItem width='20%'>

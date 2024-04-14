@@ -50,10 +50,10 @@ const MedicalProcedeuresPage = () => {
                 sectionColor: item.medicalProcedureType.medicalProcedureSection.color,
                 patientName: item.patient.name,
                 medicalProcedureName: item.medicalProcedureType.name,
-                procedureDate: format(item.procedureDate, 'dd/MM/yyyy'),
+                procedureDate: format(new Date(item.procedureDate.replace('Z', '')), 'dd/MM/yyyy'),
                 doctorName: item.doctor.name,
                 checkin: item.checkin,
-                checkinTime: item.checkinTime !== null ? format(new Date(item.checkinTime), 'HH:mm') : null,
+                checkinTime: item.checkinTime !== null ? format(new Date(item.checkinTime.replace('Z', '')), 'HH:mm') : null,
                 medicalProcedureId: item.id
             } as ListMedicalProcedures;
             return res;

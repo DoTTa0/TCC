@@ -45,19 +45,22 @@ const CheckinPage = () => {
             setUser(data.patient as IUser);
             if(data.patient.address)
                 setAddress(data.patient.address as IAddress);
+            if(data.medicalProcedure === null) {
+                const responseData = {
+                    doctorName: data.medicalProcedure?.doctor?.name,
+                    id: data.medicalProcedure?.id,
+                    medicalProcedureName: data.medicalProcedure?.medicalProcedureType?.name,
+                    medicalProcedureSection: data.medicalProcedure?.medicalProcedureType?.medicalProcedureSection?.color,
+                    nurseName: data.medicalProcedure?.nurse?.name,
+                    procedureDate: format(new Date(data.medicalProcedure?.procedureDate?.replace('Z', '')), 'dd/MM/yyyy'),
+                    procedureHour: format(new Date(data.medicalProcedure?.procedureDate?.replace('Z', '')), 'HH:mm')
+    
+                }  as IMedicalProcedure;
+            
+                setMedicalProcedure(responseData);
+            }
 
-            const responseData = {
-                doctorName: data.medicalProcedure.doctor.name,
-                id: data.medicalProcedure.id,
-                medicalProcedureName: data.medicalProcedure.medicalProcedureType.name,
-                medicalProcedureSection: data.medicalProcedure.medicalProcedureType.medicalProcedureSection.color,
-                nurseName: data.medicalProcedure.nurse.name,
-                procedureDate: format(data.medicalProcedure.procedureDate, 'dd/MM/yyyy'),
-                procedureHour: format(data.medicalProcedure.procedureDate, 'HH:mm')
-
-            }  as IMedicalProcedure;
-        
-            setMedicalProcedure(responseData);
+            
 
             setShowError(false);
             setShowInit(false);

@@ -8,6 +8,7 @@ import IAddress from "../../interfaces/IAddress";
 import IUserRequest from "../../interfaces/Request/IUserRequest";
 import IAddressRequest from "../../interfaces/Request/IAddressRequest";
 import { useParams } from "react-router-dom";
+import { format } from "date-fns";
 
 interface UserDetailsProps {
     userId?: string;
@@ -28,15 +29,16 @@ const UserDetails:FC<UserDetailsProps> = ({userId}) => {
     }, []);
 
     const callUserById = async () => {
-        const user = await api.get(`users/${getUserId}`)
+        const response = await api.get(`users/${getUserId}`)
             .then(success => success)
             .catch(error => error.response)
             .then(response => response);
 
-            setUser(user.data as IUser);
-            setUserType(user.data.userType.id);
-            if(user.data.address)
-                setAddress(user.data.address as IAddress);
+            response.data.birthDate = format(response.data?.birthDate.replace('Z', ''), 'dd/MM/yyyy');
+            setUser(response.data as IUser);
+            setUserType(response.data.userType.id);
+            if(response.data.address)
+                setAddress(response.data.address as IAddress);
     }
 
     const updateUser = async () => {
