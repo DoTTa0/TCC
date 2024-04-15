@@ -45,7 +45,7 @@ const CheckinPage = () => {
             setUser(data.patient as IUser);
             if(data.patient.address)
                 setAddress(data.patient.address as IAddress);
-            if(data.medicalProcedure === null) {
+            if(data.medicalProcedure !== null) {
                 const responseData = {
                     doctorName: data.medicalProcedure?.doctor?.name,
                     id: data.medicalProcedure?.id,
