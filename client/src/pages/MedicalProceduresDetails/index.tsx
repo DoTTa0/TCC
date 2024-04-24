@@ -66,10 +66,9 @@ const MedicalProceduresDetails: FC<MedicalProceduresDetailsProps> = ({medicalPro
             .catch(error => error.response)
             .then(response => response);
         const { data } = response;
-        console.log(data)
         const responseData = {
             checkin: data.checkin,
-            checkinTime: data.checkinTime ? format(new Date(data.checkinTime.replace('Z', '')), 'HH:mm') : '-',
+            checkinTime: data.checkinTime ? format(data.checkinTime, 'HH:mm') : '-',
             doctorName: data.doctor.name,
             folder: data.folder,
             id: data.id,

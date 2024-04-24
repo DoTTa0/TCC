@@ -45,7 +45,7 @@ const UserProfile: React.FC<UserProfileProps> = ({user, setUser, address, setAdd
                             <InputComponent title='Telefone' disable={disable} value={user.phone} object={user} nameObject={'phone'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='25%'>
-                            <InputComponent title='Telefone de emergência' disable={disable} value={user.phoneEmergency} object={user} nameObject={'phone'} setValue={setUser}/>
+                            <InputComponent title='Telefone de emergência' disable={disable} value={user.phoneEmergency} object={user} nameObject={'phoneEmergency'} setValue={setUser}/>
                         </FormInfoItem>
                         <FormInfoItem width='15%'>
                             <InputComponent title='Sexo' disable={disable} value={user.gender} object={user} nameObject={'gender'} setValue={setUser}/>
